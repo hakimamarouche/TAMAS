@@ -1,4 +1,4 @@
-namespace ca.mcgill.ecse223.teachingassistantmanagementsystem.ump;
+namespace ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
 
 class JobManager{
 	immutable Integer hourlyRate;

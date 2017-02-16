@@ -1,7 +1,7 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.24.0-dab6b48 modeling language!*/
 
-package ca.mcgill.ecse223.teachingassistantmanagementsystem.ump;
+package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
 
 // line 17 "../../../../../TeachingAssistantManagementSystem.ump"
 public class Applicant
