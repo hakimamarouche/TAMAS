@@ -16,24 +16,18 @@ public class JobOffer
 
   //JobOffer Associations
   private Course course;
-  private Application application;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public JobOffer(int aWorkHours, Course aCourse, Application aApplication)
+  public JobOffer(int aWorkHours, Course aCourse)
   {
     workHours = aWorkHours;
     boolean didAddCourse = setCourse(aCourse);
     if (!didAddCourse)
     {
       throw new RuntimeException("Unable to create job due to course");
-    }
-    boolean didAddApplication = setApplication(aApplication);
-    if (!didAddApplication)
-    {
-      throw new RuntimeException("Unable to create job due to application");
     }
   }
 
@@ -59,11 +53,6 @@ public class JobOffer
     return course;
   }
 
-  public Application getApplication()
-  {
-    return application;
-  }
-
   public boolean setCourse(Course aCourse)
   {
     boolean wasSet = false;
@@ -83,45 +72,11 @@ public class JobOffer
     return wasSet;
   }
 
-  public boolean setApplication(Application aApplication)
-  {
-    boolean wasSet = false;
-    //Must provide application to job
-    if (aApplication == null)
-    {
-      return wasSet;
-    }
-
-    //application already at maximum (3)
-    if (aApplication.numberOfJobs() >= Application.maximumNumberOfJobs())
-    {
-      return wasSet;
-    }
-    
-    Application existingApplication = application;
-    application = aApplication;
-    if (existingApplication != null && !existingApplication.equals(aApplication))
-    {
-      boolean didRemove = existingApplication.removeJob(this);
-      if (!didRemove)
-      {
-        application = existingApplication;
-        return wasSet;
-      }
-    }
-    application.addJob(this);
-    wasSet = true;
-    return wasSet;
-  }
-
   public void delete()
   {
     Course placeholderCourse = course;
     this.course = null;
     placeholderCourse.removeJob(this);
-    Application placeholderApplication = application;
-    this.application = null;
-    placeholderApplication.removeJob(this);
   }
 
 
@@ -130,8 +85,7 @@ public class JobOffer
     String outputString = "";
     return super.toString() + "["+
             "workHours" + ":" + getWorkHours()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "course = "+(getCourse()!=null?Integer.toHexString(System.identityHashCode(getCourse())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "application = "+(getApplication()!=null?Integer.toHexString(System.identityHashCode(getApplication())):"null")
+            "  " + "course = "+(getCourse()!=null?Integer.toHexString(System.identityHashCode(getCourse())):"null")
      + outputString;
   }
 }

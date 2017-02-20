@@ -18,9 +18,9 @@ public class TaOffer extends JobOffer
   // CONSTRUCTOR
   //------------------------
 
-  public TaOffer(int aWorkHours, Course aCourse, Application aApplication, int aCapacity)
+  public TaOffer(int aWorkHours, Course aCourse, int aCapacity)
   {
-    super(aWorkHours, aCourse, aApplication);
+    super(aWorkHours, aCourse);
     capacity = aCapacity;
   }
 

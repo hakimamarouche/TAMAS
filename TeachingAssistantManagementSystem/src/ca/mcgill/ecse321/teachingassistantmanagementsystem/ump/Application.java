@@ -23,7 +23,7 @@ public class Application
   // CONSTRUCTOR
   //------------------------
 
-  public Application(String aExperience, Applicant aApplicant)
+  public Application(String aExperience, Applicant aApplicant, JobOffer... allJobs)
   {
     experience = aExperience;
     if (aApplicant == null || aApplicant.getApplication() != null)
@@ -32,9 +32,14 @@ public class Application
     }
     applicant = aApplicant;
     jobs = new ArrayList<JobOffer>();
+    boolean didAddJobs = setJobs(allJobs);
+    if (!didAddJobs)
+    {
+      throw new RuntimeException("Unable to create Application, must have 1 to 3 jobs");
+    }
   }
 
-  public Application(String aExperience, int aMcgillIdForApplicant)
+  public Application(String aExperience, int aMcgillIdForApplicant, JobOffer... allJobs)
   {
     experience = aExperience;
     applicant = new Applicant(aMcgillIdForApplicant, this);
@@ -93,12 +98,6 @@ public class Application
     return index;
   }
 
-  public boolean isNumberOfJobsValid()
-  {
-    boolean isValid = numberOfJobs() >= minimumNumberOfJobs() && numberOfJobs() <= maximumNumberOfJobs();
-    return isValid;
-  }
-
   public static int minimumNumberOfJobs()
   {
     return 1;
@@ -109,64 +108,58 @@ public class Application
     return 3;
   }
 
-  public JobOffer addJob(int aWorkHours, Course aCourse)
-  {
-    if (numberOfJobs() >= maximumNumberOfJobs())
-    {
-      return null;
-    }
-    else
-    {
-      return new JobOffer(aWorkHours, aCourse, this);
-    }
-  }
-
   public boolean addJob(JobOffer aJob)
   {
     boolean wasAdded = false;
     if (jobs.contains(aJob)) { return false; }
-    if (numberOfJobs() >= maximumNumberOfJobs())
-    {
-      return wasAdded;
-    }
-
-    Application existingApplication = aJob.getApplication();
-    boolean isNewApplication = existingApplication != null && !this.equals(existingApplication);
-
-    if (isNewApplication && existingApplication.numberOfJobs() <= minimumNumberOfJobs())
-    {
-      return wasAdded;
-    }
-
-    if (isNewApplication)
-    {
-      aJob.setApplication(this);
-    }
-    else
+    if (numberOfJobs() < maximumNumberOfJobs())
     {
       jobs.add(aJob);
+      wasAdded = true;
     }
-    wasAdded = true;
     return wasAdded;
   }
 
   public boolean removeJob(JobOffer aJob)
   {
     boolean wasRemoved = false;
-    //Unable to remove aJob, as it must always have a application
-    if (this.equals(aJob.getApplication()))
+    if (!jobs.contains(aJob))
     {
       return wasRemoved;
     }
 
-    //application already at minimum (1)
     if (numberOfJobs() <= minimumNumberOfJobs())
     {
       return wasRemoved;
     }
+
     jobs.remove(aJob);
     wasRemoved = true;
     return wasRemoved;
+  }
+
+  public boolean setJobs(JobOffer... newJobs)
+  {
+    boolean wasSet = false;
+    ArrayList<JobOffer> verifiedJobs = new ArrayList<JobOffer>();
+    for (JobOffer aJob : newJobs)
+    {
+      if (verifiedJobs.contains(aJob))
+      {
+        continue;
+      }
+      verifiedJobs.add(aJob);
+    }
+
+    if (verifiedJobs.size() != newJobs.length || verifiedJobs.size() < minimumNumberOfJobs() || verifiedJobs.size() > maximumNumberOfJobs())
+    {
+      return wasSet;
+    }
+
+    jobs.clear();
+    jobs.addAll(verifiedJobs);
+    wasSet = true;
+    return wasSet;
   }
 
   public boolean addJobAt(JobOffer aJob, int index)
@@ -209,11 +202,7 @@ public class Application
     {
       existingApplicant.delete();
     }
-    for(int i=jobs.size(); i > 0; i--)
-    {
-      JobOffer aJob = jobs.get(i - 1);
-      aJob.delete();
-    }
+    jobs.clear();
   }
 
 

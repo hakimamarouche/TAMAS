@@ -18,9 +18,9 @@ public class GraderOffer extends JobOffer
   // CONSTRUCTOR
   //------------------------
 
-  public GraderOffer(int aWorkHours, Course aCourse, Application aApplication, int aCapacity)
+  public GraderOffer(int aWorkHours, Course aCourse, int aCapacity)
   {
-    super(aWorkHours, aCourse, aApplication);
+    super(aWorkHours, aCourse);
     capacity = aCapacity;
   }
 

@@ -177,9 +177,9 @@ public class Course
     return 0;
   }
 
-  public JobOffer addJob(int aWorkHours, Application aApplication)
+  public JobOffer addJob(int aWorkHours)
   {
-    return new JobOffer(aWorkHours, this, aApplication);
+    return new JobOffer(aWorkHours, this);
   }
 
   public boolean addJob(JobOffer aJob)

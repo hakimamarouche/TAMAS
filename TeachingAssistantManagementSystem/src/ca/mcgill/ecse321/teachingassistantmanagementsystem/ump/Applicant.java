@@ -36,10 +36,10 @@ public class Applicant
     setDegree(Degree.GRADUATE);
   }
 
-  public Applicant(int aMcgillId, String aExperienceForApplication)
+  public Applicant(int aMcgillId, String aExperienceForApplication, JobOffer... allJobsForApplication)
   {
     mcgillId = aMcgillId;
-    application = new Application(aExperienceForApplication, this);
+    application = new Application(aExperienceForApplication, this, allJobsForApplication);
   }
 
   //------------------------
