@@ -44,6 +44,11 @@ public class Application
     experience = aExperience;
     applicant = new Applicant(aMcgillIdForApplicant, this);
     jobs = new ArrayList<JobOffer>();
+    boolean didAddJobs = setJobs(allJobs);
+    if (!didAddJobs)
+    {
+      throw new RuntimeException("Unable to create Application, must have 1 to 3 jobs");
+    }
   }
 
   //------------------------
@@ -98,6 +103,12 @@ public class Application
     return index;
   }
 
+  public boolean isNumberOfJobsValid()
+  {
+    boolean isValid = numberOfJobs() >= minimumNumberOfJobs() && numberOfJobs() <= maximumNumberOfJobs();
+    return isValid;
+  }
+
   public static int minimumNumberOfJobs()
   {
     return 1;
@@ -112,10 +123,23 @@ public class Application
   {
     boolean wasAdded = false;
     if (jobs.contains(aJob)) { return false; }
-    if (numberOfJobs() < maximumNumberOfJobs())
+    if (numberOfJobs() >= maximumNumberOfJobs())
     {
-      jobs.add(aJob);
+      return wasAdded;
+    }
+
+    jobs.add(aJob);
+    if (aJob.indexOfApplication(this) != -1)
+    {
       wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aJob.addApplication(this);
+      if (!wasAdded)
+      {
+        jobs.remove(aJob);
+      }
     }
     return wasAdded;
   }
@@ -133,8 +157,20 @@ public class Application
       return wasRemoved;
     }
 
-    jobs.remove(aJob);
-    wasRemoved = true;
+    int oldIndex = jobs.indexOf(aJob);
+    jobs.remove(oldIndex);
+    if (aJob.indexOfApplication(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aJob.removeApplication(this);
+      if (!wasRemoved)
+      {
+        jobs.add(oldIndex,aJob);
+      }
+    }
     return wasRemoved;
   }
 
@@ -156,8 +192,25 @@ public class Application
       return wasSet;
     }
 
+    ArrayList<JobOffer> oldJobs = new ArrayList<JobOffer>(jobs);
     jobs.clear();
-    jobs.addAll(verifiedJobs);
+    for (JobOffer aNewJob : verifiedJobs)
+    {
+      jobs.add(aNewJob);
+      if (oldJobs.contains(aNewJob))
+      {
+        oldJobs.remove(aNewJob);
+      }
+      else
+      {
+        aNewJob.addApplication(this);
+      }
+    }
+
+    for (JobOffer anOldJob : oldJobs)
+    {
+      anOldJob.removeApplication(this);
+    }
     wasSet = true;
     return wasSet;
   }
@@ -202,7 +255,12 @@ public class Application
     {
       existingApplicant.delete();
     }
+    ArrayList<JobOffer> copyOfJobs = new ArrayList<JobOffer>(jobs);
     jobs.clear();
+    for(JobOffer aJob : copyOfJobs)
+    {
+      aJob.removeApplication(this);
+    }
   }
 
 

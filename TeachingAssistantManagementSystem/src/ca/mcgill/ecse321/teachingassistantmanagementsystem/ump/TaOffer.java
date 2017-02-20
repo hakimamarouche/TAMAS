@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.24.0-dab6b48 modeling language!*/
 
 package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
+import java.util.*;
 
 // line 41 "../../../../../TeachingAssistantManagementSystem.ump"
 public class TaOffer extends JobOffer
