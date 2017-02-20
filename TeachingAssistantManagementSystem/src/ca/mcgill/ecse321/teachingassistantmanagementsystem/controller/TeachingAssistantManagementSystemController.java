@@ -59,6 +59,9 @@ public class TeachingAssistantManagementSystemController {
 		if(allJobs.length<1 || allJobs.length>3){
 			error = error + "Applicant can only apply for one to three jobs.";
 		}
+		if(error.length()>0){
+			throw new InvalidInputException(error);
+		}
 		Application newApplication = new Application(experience, newApplicant, allJobs);
 		for(JobOffer nextJob : allJobs) {
 			nextJob.addApplication(newApplication);
