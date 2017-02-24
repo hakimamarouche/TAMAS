@@ -13,9 +13,11 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 
 public class TeachingAssistantManagementSystemController {
 	private JobManager jm;
+	
 	public List<Course> ViewCourses(){
 		return jm.getCourses();
 	}
+	
 	public void createJobPosting(int taHours, int graderHours, int courseCredit, String courseID, int budget, int studentsEnrolled, Instructor courseInstructor, int taOfferCapacity, int graderOfferCapacity) throws InvalidInputException{
 		String error = "";
 		if(taOfferCapacity <1){
@@ -48,6 +50,7 @@ public class TeachingAssistantManagementSystemController {
 		newCourse.addJob(newGraderJob);
 		jm.addCourse(newCourse);
 	}
+	
 	public void applyForJob(Applicant newApplicant, String experience, JobOffer... allJobs) throws InvalidInputException{
 		String error = "";
 		if(newApplicant == null){
@@ -67,4 +70,5 @@ public class TeachingAssistantManagementSystemController {
 			nextJob.addApplication(newApplication);
 		}
 	}
+	
 }
