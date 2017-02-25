@@ -7,8 +7,15 @@ import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
 
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Applicant;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Application;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Course;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.GraderOffer;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Instructor;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobManager;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobOffer;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 
 
 public abstract class PersistenceXStream {
@@ -16,13 +23,22 @@ public abstract class PersistenceXStream {
 	private static XStream xstream = new XStream();
     private static String filename = "data.xml";
     
-    public static JobManager initializeModelManager(String fileName){
-    	JobManager jm;
+    public static Department initializeModelManager(String fileName){
+    	Department dpt;
     	setFilename(fileName);
     	setAlias("course", Course.class);
+    	setAlias("applicant", Applicant.class);
+    	setAlias("application", Application.class);
+    	setAlias("department", Department.class);
+    	setAlias("grader offer", GraderOffer.class);
+    	setAlias("instructor", Instructor.class);
+    	setAlias("job manager", JobManager.class);
+    	setAlias("job offer", JobOffer.class);
+    	setAlias("TA offer", TaOffer.class);
+    	
     	File file = new File(fileName);
         if (file.exists()) {
-            jm = (JobManager) loadFromXMLwithXStream();
+            dpt = (Department) loadFromXMLwithXStream();
         } else {
         	try {
                 file.createNewFile();
@@ -30,10 +46,10 @@ public abstract class PersistenceXStream {
                 e.printStackTrace();
                 System.exit(1);
             }
-            jm = new JobManager(4);
-            saveToXMLwithXStream(jm);
+            dpt = new Department(4);
+            saveToXMLwithXStream(dpt);
         }
-        return jm;
+        return dpt;
         }
     
     public static boolean saveToXMLwithXStream(Object obj) {
@@ -71,4 +87,3 @@ public abstract class PersistenceXStream {
     }
 
 }
-

@@ -13,6 +13,9 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 
 public class TeachingAssistantManagementSystemController {
 	private JobManager jm;
+	public TeachingAssistantManagementSystemController(JobManager jm) {
+		  this.jm = jm;
+	}
 	public List<Course> ViewCourses(){
 		return jm.getCourses();
 	}
@@ -40,7 +43,9 @@ public class TeachingAssistantManagementSystemController {
 		if(error.length()>0){
 			throw new InvalidInputException(error);
 		}
-		
+		if(studentsEnrolled<40){
+			error = error + "Course size is too small.";
+		}
 		Course newCourse = new Course(taHours, graderHours,courseCredit, courseID, budget, studentsEnrolled, jm, courseInstructor);
 		TaOffer newTaJob = new TaOffer(taHours/taOfferCapacity,newCourse, taOfferCapacity);
 		GraderOffer newGraderJob = new GraderOffer(graderHours/graderOfferCapacity, newCourse, taOfferCapacity);
