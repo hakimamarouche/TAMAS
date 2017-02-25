@@ -14,6 +14,11 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 public class TeachingAssistantManagementSystemController {
 	private JobManager jm;
 	
+	//for the constructor should we involve the Department class instead???
+	public TeachingAssistantManagementSystemController(JobManager jm) {
+	  this.jm = jm;
+	}
+	
 	public List<Course> ViewCourses(){
 		return jm.getCourses();
 	}
