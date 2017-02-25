@@ -41,7 +41,7 @@ public abstract class PersistenceXStream {
             dpt = (Department) loadFromXMLwithXStream();
         } else {
         	try {
-                file.createNewFile();
+	                file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);
