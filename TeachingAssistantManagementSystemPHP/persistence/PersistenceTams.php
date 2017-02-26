@@ -17,7 +17,7 @@ class PersistenceTams {
 			$dpt = new Department();
 		}
 
-		return $rm;
+		return $dpt;
 	}
 
 	function writeDataToStore($dpt) {
