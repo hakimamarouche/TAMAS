@@ -422,6 +422,8 @@ public class ViewCoursePage extends JFrame{
 			courseDropdown.addItem(tac.createJobPosting(Integer.parseInt(taHourText.getText()), Integer.parseInt(graderHourText.getText()), Integer.parseInt(creditText2.getText()), courseIDText.getText(), Integer.parseInt(budgetText.getText()), Integer.parseInt(studentsEnrolledText.getText()), new Instructor()).getCourseId());
 		} catch (InvalidInputException e){
 			error = e.getMessage();
+		} catch (NumberFormatException e2){
+			error = "Ta work hours, grader work hours, course credits, course budget & students enrolled must be integers.";
 		}
 		
 		refreshdata();
