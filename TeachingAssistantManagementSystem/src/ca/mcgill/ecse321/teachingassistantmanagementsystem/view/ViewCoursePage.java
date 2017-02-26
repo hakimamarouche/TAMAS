@@ -250,11 +250,11 @@ public class ViewCoursePage extends JFrame{
         hg1.addComponent(experienceLabel);
         vg8.addComponent(experienceLabel);
         
-        hg1.addComponent(experienceTextField);
-        vg9.addComponent(experienceTextField);
+        hg1.addComponent(taGraderDropDown);
+        vg9.addComponent(taGraderDropDown);
         
-        hg2.addComponent(taGraderDropDown);
-        vg8.addComponent(taGraderDropDown);
+        hg2.addComponent(experienceTextField);
+        vg8.addComponent(experienceTextField);
         
         hg2.addComponent(applyToJobs);
         vg9.addComponent(applyToJobs);
