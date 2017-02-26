@@ -1,7 +1,0 @@
-<ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department id="1">
-  <taManager id="2">
-    <hourlyRate>4</hourlyRate>
-    <courses id="3"/>
-    <department reference="1"/>
-  </taManager>
-</ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department>
