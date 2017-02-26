@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.teachingassistantmanagementsystem.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.List;
 import java.util.Properties;
 
 import javax.swing.GroupLayout;
@@ -30,7 +31,7 @@ public class ViewCoursePage extends JFrame{
 	private JLabel errorMessage;
 	private static Department dpt;
 	private String error = null;
-	
+	private List applicants = new List();
 	private JLabel dropdownLabel;
 	private JComboBox<String> courseDropdown;
 	private JLabel idLabel;
@@ -59,6 +60,10 @@ public class ViewCoursePage extends JFrame{
 	private JLabel graderCapacityLabel;
 	private JTextField graderCapacityText;
 	private JButton createCourseButton;
+	private JButton addJobToList;
+	private JButton applyToJobs;
+	private JLabel mcgillIDLabel;
+	private JTextField mcgillIDText;
 	
 	public ViewCoursePage(Department dpt)
 	{
@@ -74,6 +79,10 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    mcgillIDLabel = new JLabel();
+	    mcgillIDText = new JTextField();
+	    addJobToList = new JButton();
+	    applyToJobs = new JButton();
 		dropdownLabel = new JLabel();
 		courseDropdown = new JComboBox<String>(new String[0]);
 		idLabel = new JLabel();
@@ -137,6 +146,10 @@ public class ViewCoursePage extends JFrame{
 		graderCapacityLabel.setText("Grader Job Capacity:");
 		graderCapacityText.setText("");
 		createCourseButton.setText("Create Course");
+		addJobToList.setText("Add job");
+		applyToJobs.setText("Apply to jobs");
+		mcgillIDLabel.setText("Applicant ID:");
+		mcgillIDText.setText("");
 		
 		//This will cause a bug for now since there are no courses to show
 		
@@ -149,6 +162,8 @@ public class ViewCoursePage extends JFrame{
 		panel.add(idText);
 		panel.add(creditLabel);
 		panel.add(creditText);
+		panel.add(mcgillIDLabel);
+		panel.add(mcgillIDText);
 		panel.add(taJobLabel);
 		panel.add(taJobText);
 		panel.add(graderJobLabel);
@@ -171,6 +186,8 @@ public class ViewCoursePage extends JFrame{
 		panel.add(graderCapacityLabel);
 		panel.add(graderCapacityText);
 		panel.add(createCourseButton);
+		panel.add(applyToJobs);
+		panel.add(addJobToList);
 		getContentPane().add(panel);
 		
 		GroupLayout layout = new GroupLayout(panel);
@@ -228,6 +245,18 @@ public class ViewCoursePage extends JFrame{
         
         hg1.addComponent(getInfoButton);
         vg6.addComponent(getInfoButton);
+        
+        hg1.addComponent(mcgillIDLabel);
+        vg7.addComponent(mcgillIDLabel);
+        
+        hg2.addComponent(mcgillIDText);
+        vg7.addComponent(mcgillIDText);
+        
+        hg1.addComponent(addJobToList);
+        vg8.addComponent(addJobToList);
+        
+        hg2.addComponent(applyToJobs);
+        vg8.addComponent(applyToJobs);
         
         hg3.addComponent(taHourLabel);
         vg1.addComponent(taHourLabel);
@@ -329,6 +358,10 @@ public class ViewCoursePage extends JFrame{
 		taCapacityText.setText("");
 		graderCapacityText.setText("");
 			
+	}
+	public void addJobToListActionPerformed(){
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		
 	}
 	public void getInfoActionPerformed(){
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);

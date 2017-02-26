@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.24.0-dab6b48 modeling language!*/
 
 package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
+import java.util.*;
 
 // line 17 "../../../../../TeachingAssistantManagementSystem.ump"
 public class Applicant
@@ -19,27 +20,17 @@ public class Applicant
   private Degree degree;
 
   //Applicant Associations
-  private Application application;
+  private List<Application> applications;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Applicant(int aMcgillId, Application aApplication)
+  public Applicant(int aMcgillId)
   {
     mcgillId = aMcgillId;
-    if (aApplication == null || aApplication.getApplicant() != null)
-    {
-      throw new RuntimeException("Unable to create Applicant due to aApplication");
-    }
-    application = aApplication;
+    applications = new ArrayList<Application>();
     setDegree(Degree.GRADUATE);
-  }
-
-  public Applicant(int aMcgillId, String aExperienceForApplication, JobOffer... allJobsForApplication)
-  {
-    mcgillId = aMcgillId;
-    application = new Application(aExperienceForApplication, this, allJobsForApplication);
   }
 
   //------------------------
@@ -76,18 +67,114 @@ public class Applicant
     return true;
   }
 
-  public Application getApplication()
+  public Application getApplication(int index)
   {
-    return application;
+    Application aApplication = applications.get(index);
+    return aApplication;
+  }
+
+  public List<Application> getApplications()
+  {
+    List<Application> newApplications = Collections.unmodifiableList(applications);
+    return newApplications;
+  }
+
+  public int numberOfApplications()
+  {
+    int number = applications.size();
+    return number;
+  }
+
+  public boolean hasApplications()
+  {
+    boolean has = applications.size() > 0;
+    return has;
+  }
+
+  public int indexOfApplication(Application aApplication)
+  {
+    int index = applications.indexOf(aApplication);
+    return index;
+  }
+
+  public static int minimumNumberOfApplications()
+  {
+    return 0;
+  }
+
+  public Application addApplication(String aExperience, JobOffer aJobs)
+  {
+    return new Application(aExperience, this, aJobs);
+  }
+
+  public boolean addApplication(Application aApplication)
+  {
+    boolean wasAdded = false;
+    if (applications.contains(aApplication)) { return false; }
+    Applicant existingApplicant = aApplication.getApplicant();
+    boolean isNewApplicant = existingApplicant != null && !this.equals(existingApplicant);
+    if (isNewApplicant)
+    {
+      aApplication.setApplicant(this);
+    }
+    else
+    {
+      applications.add(aApplication);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeApplication(Application aApplication)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aApplication, as it must always have a applicant
+    if (!this.equals(aApplication.getApplicant()))
+    {
+      applications.remove(aApplication);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  public boolean addApplicationAt(Application aApplication, int index)
+  {  
+    boolean wasAdded = false;
+    if(addApplication(aApplication))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfApplications()) { index = numberOfApplications() - 1; }
+      applications.remove(aApplication);
+      applications.add(index, aApplication);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveApplicationAt(Application aApplication, int index)
+  {
+    boolean wasAdded = false;
+    if(applications.contains(aApplication))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfApplications()) { index = numberOfApplications() - 1; }
+      applications.remove(aApplication);
+      applications.add(index, aApplication);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addApplicationAt(aApplication, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
   {
-    Application existingApplication = application;
-    application = null;
-    if (existingApplication != null)
+    for(int i=applications.size(); i > 0; i--)
     {
-      existingApplication.delete();
+      Application aApplication = applications.get(i - 1);
+      aApplication.delete();
     }
   }
 
@@ -96,8 +183,7 @@ public class Applicant
   {
     String outputString = "";
     return super.toString() + "["+
-            "mcgillId" + ":" + getMcgillId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "application = "+(getApplication()!=null?Integer.toHexString(System.identityHashCode(getApplication())):"null")
+            "mcgillId" + ":" + getMcgillId()+ "]"
      + outputString;
   }
 }

@@ -59,24 +59,23 @@ public class TeachingAssistantManagementSystemController {
 		PersistenceXStream.saveToXMLwithXStream(dp);
 		return newCourse;
 	}
-	public void applyForJob(Applicant newApplicant, String experience, JobOffer... allJobs) throws InvalidInputException{
+	public void applyForJob(int mcgillID, String experience, JobOffer job) throws InvalidInputException{
 		String error = "";
-		if(newApplicant == null){
-			error = error + "No applicant selected";
+		if(mcgillID<10000000){
+			error = error + "Invalid mcgill ID.";
 		}
 		if(experience == null){
 			error = error + "Experience can not be empty";
 		}
-		if(allJobs.length<1 || allJobs.length>3){
-			error = error + "Applicant can only apply for one to three jobs.";
+		if(job == null){
+			error = error + "Select a job to apply to.";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
 		}
-		Application newApplication = new Application(experience, newApplicant, allJobs);
-		for(JobOffer nextJob : allJobs) {
-			nextJob.addApplication(newApplication);
-		}
+		Applicant newApplicant = new Applicant(mcgillID);
+		Application newApplication = new Application(experience, newApplicant, job );
+		job.addApplication(newApplication);
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 }

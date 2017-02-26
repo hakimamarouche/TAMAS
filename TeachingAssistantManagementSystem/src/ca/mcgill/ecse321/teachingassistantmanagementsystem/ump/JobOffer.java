@@ -110,49 +110,39 @@ public class JobOffer
     return 0;
   }
 
+  public Application addApplication(String aExperience, Applicant aApplicant)
+  {
+    return new Application(aExperience, aApplicant, this);
+  }
+
   public boolean addApplication(Application aApplication)
   {
     boolean wasAdded = false;
     if (applications.contains(aApplication)) { return false; }
     if (applications.contains(aApplication)) { return false; }
     if (applications.contains(aApplication)) { return false; }
-    applications.add(aApplication);
-    if (aApplication.indexOfJob(this) != -1)
+    JobOffer existingJobs = aApplication.getJobs();
+    boolean isNewJobs = existingJobs != null && !this.equals(existingJobs);
+    if (isNewJobs)
     {
-      wasAdded = true;
+      aApplication.setJobs(this);
     }
     else
     {
-      wasAdded = aApplication.addJob(this);
-      if (!wasAdded)
-      {
-        applications.remove(aApplication);
-      }
+      applications.add(aApplication);
     }
+    wasAdded = true;
     return wasAdded;
   }
 
   public boolean removeApplication(Application aApplication)
   {
     boolean wasRemoved = false;
-    if (!applications.contains(aApplication))
+    //Unable to remove aApplication, as it must always have a jobs
+    if (!this.equals(aApplication.getJobs()))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = applications.indexOf(aApplication);
-    applications.remove(oldIndex);
-    if (aApplication.indexOfJob(this) == -1)
-    {
+      applications.remove(aApplication);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aApplication.removeJob(this);
-      if (!wasRemoved)
-      {
-        applications.add(oldIndex,aApplication);
-      }
     }
     return wasRemoved;
   }
@@ -194,18 +184,10 @@ public class JobOffer
     Course placeholderCourse = course;
     this.course = null;
     placeholderCourse.removeJob(this);
-    ArrayList<Application> copyOfApplications = new ArrayList<Application>(applications);
-    applications.clear();
-    for(Application aApplication : copyOfApplications)
+    for(int i=applications.size(); i > 0; i--)
     {
-      if (aApplication.numberOfJobs() <= Application.minimumNumberOfJobs())
-      {
-        aApplication.delete();
-      }
-      else
-      {
-        aApplication.removeJob(this);
-      }
+      Application aApplication = applications.get(i - 1);
+      aApplication.delete();
     }
   }
 
