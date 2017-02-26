@@ -23,14 +23,9 @@ public class TeachingAssistantManagementSystemController {
 	public List<Course> ViewCourses(){
 		return jm.getCourses();
 	}
-	public Course createJobPosting(int taHours, int graderHours, int courseCredit, String courseID, int budget, int studentsEnrolled, Instructor courseInstructor, int taOfferCapacity, int graderOfferCapacity) throws InvalidInputException{
+	public Course createJobPosting(int taHours, int graderHours, int courseCredit, String courseID, int budget, int studentsEnrolled, Instructor courseInstructor) throws InvalidInputException{
 		String error = "";
-		if(taOfferCapacity <1){
-			error = error + "TA offer capacity must atleast be one.";
-		}
-		if(graderOfferCapacity<1){
-			error = error + "Grader offer capcity must be atleast one.";
-		}
+		
 		if(courseID == null){
 			error = error + "Course ID can not be empty.";
 		}
@@ -51,8 +46,8 @@ public class TeachingAssistantManagementSystemController {
 			error = error + "Course size is too small.";
 		}
 		Course newCourse = new Course(taHours, graderHours,courseCredit, courseID, budget, studentsEnrolled, jm, courseInstructor);
-		TaOffer newTaJob = new TaOffer(taHours/taOfferCapacity,newCourse, taOfferCapacity);
-		GraderOffer newGraderJob = new GraderOffer(graderHours/graderOfferCapacity, newCourse, taOfferCapacity);
+		TaOffer newTaJob = new TaOffer(taHours,newCourse, newCourse.getBudget()/taHours);
+		GraderOffer newGraderJob = new GraderOffer(graderHours, newCourse, newCourse.getBudget()/graderHours);
 		newCourse.addJob(newTaJob);
 		newCourse.addJob(newGraderJob);
 		jm.addCourse(newCourse);
@@ -64,8 +59,8 @@ public class TeachingAssistantManagementSystemController {
 		if(mcgillID<10000000){
 			error = error + "Invalid mcgill ID.";
 		}
-		if(experience == null){
-			error = error + "Experience can not be empty";
+		if(experience == null || experience.length()<30){
+			error = error + "Experience must be atleast 30 characters long.";
 		}
 		if(job == null){
 			error = error + "Select a job to apply to.";

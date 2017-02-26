@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.List;
 import java.util.Properties;
 
+import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,7 +32,6 @@ public class ViewCoursePage extends JFrame{
 	private JLabel errorMessage;
 	private static Department dpt;
 	private String error = null;
-	private List applicants = new List();
 	private JLabel dropdownLabel;
 	private JComboBox<String> courseDropdown;
 	private JLabel idLabel;
@@ -55,16 +55,13 @@ public class ViewCoursePage extends JFrame{
 	private JTextField budgetText;
 	private JLabel studentsEnrolledLabel;
 	private JTextField studentsEnrolledText;
-	private JLabel taCapacityLabel;
-	private JTextField taCapacityText;
-	private JLabel graderCapacityLabel;
-	private JTextField graderCapacityText;
 	private JButton createCourseButton;
-	private JButton addJobToList;
+	private JLabel experienceLabel;
+	private JTextField experienceTextField;
 	private JButton applyToJobs;
 	private JLabel mcgillIDLabel;
 	private JTextField mcgillIDText;
-	
+	private JComboBox<String> taGraderDropDown;
 	public ViewCoursePage(Department dpt)
 	{
 		this.dpt = dpt;
@@ -81,10 +78,12 @@ public class ViewCoursePage extends JFrame{
 	    // inits
 	    mcgillIDLabel = new JLabel();
 	    mcgillIDText = new JTextField();
-	    addJobToList = new JButton();
+	    experienceLabel = new JLabel();
+	    experienceTextField = new JTextField();
 	    applyToJobs = new JButton();
 		dropdownLabel = new JLabel();
 		courseDropdown = new JComboBox<String>(new String[0]);
+		taGraderDropDown = new JComboBox<String>(new String[0]);
 		idLabel = new JLabel();
 		idText = new JLabel();
 		creditLabel = new JLabel();
@@ -106,16 +105,13 @@ public class ViewCoursePage extends JFrame{
 		budgetText = new JTextField();
 		studentsEnrolledLabel = new JLabel();
 		studentsEnrolledText = new JTextField();
-		taCapacityLabel = new JLabel();
-		taCapacityText = new JTextField();
-		graderCapacityLabel = new JLabel();
-		graderCapacityText = new JTextField();
 		createCourseButton = new JButton();
+		
 		
 	    
 	    // global settings and listeners
 	    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	    setTitle("Event Registration");
+	    setTitle("Ta Management System.");
 	    
 	    // default text
 	    dropdownLabel.setText("Course: " );
@@ -141,13 +137,13 @@ public class ViewCoursePage extends JFrame{
 		budgetText.setText("");
 		studentsEnrolledLabel.setText("Students Enrolled:");
 		studentsEnrolledText.setText("");
-		taCapacityLabel.setText("Ta Job Capacity:");
-		taCapacityText.setText("");
-		graderCapacityLabel.setText("Grader Job Capacity:");
-		graderCapacityText.setText("");
 		createCourseButton.setText("Create Course");
-		addJobToList.setText("Add job");
-		applyToJobs.setText("Apply to jobs");
+		experienceLabel.setText("Experience:");
+		taGraderDropDown.addItem("");
+		taGraderDropDown.addItem("grader");
+		taGraderDropDown.addItem("TA");
+		experienceTextField.setText("");
+		applyToJobs.setText("Apply to job");
 		mcgillIDLabel.setText("Applicant ID:");
 		mcgillIDText.setText("");
 		
@@ -181,13 +177,12 @@ public class ViewCoursePage extends JFrame{
 		panel.add(budgetText);
 		panel.add(studentsEnrolledLabel);
 		panel.add(studentsEnrolledText);
-		panel.add(taCapacityLabel);
-		panel.add(taCapacityText);
-		panel.add(graderCapacityLabel);
-		panel.add(graderCapacityText);
+
 		panel.add(createCourseButton);
 		panel.add(applyToJobs);
-		panel.add(addJobToList);
+		panel.add(experienceLabel);
+		panel.add(experienceTextField);
+		panel.add(taGraderDropDown);
 		getContentPane().add(panel);
 		
 		GroupLayout layout = new GroupLayout(panel);
@@ -252,11 +247,17 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(mcgillIDText);
         vg7.addComponent(mcgillIDText);
         
-        hg1.addComponent(addJobToList);
-        vg8.addComponent(addJobToList);
+        hg1.addComponent(experienceLabel);
+        vg8.addComponent(experienceLabel);
+        
+        hg1.addComponent(experienceTextField);
+        vg9.addComponent(experienceTextField);
+        
+        hg2.addComponent(taGraderDropDown);
+        vg8.addComponent(taGraderDropDown);
         
         hg2.addComponent(applyToJobs);
-        vg8.addComponent(applyToJobs);
+        vg9.addComponent(applyToJobs);
         
         hg3.addComponent(taHourLabel);
         vg1.addComponent(taHourLabel);
@@ -294,20 +295,9 @@ public class ViewCoursePage extends JFrame{
         hg4.addComponent(studentsEnrolledText);
         vg6.addComponent(studentsEnrolledText);
         
-        hg3.addComponent(taCapacityLabel);
-        vg7.addComponent(taCapacityLabel);
-        
-        hg4.addComponent(taCapacityText);
-        vg7.addComponent(taCapacityText);
-        
-        hg3.addComponent(graderCapacityLabel);
-        vg8.addComponent(graderCapacityLabel);
-        
-        hg4.addComponent(graderCapacityText);
-        vg8.addComponent(graderCapacityText);
         
         hg3.addComponent(createCourseButton);
-        vg9.addComponent(createCourseButton);
+        vg7.addComponent(createCourseButton);
         
         GroupLayout.SequentialGroup hseq1 = layout.createSequentialGroup();
         hseq1.addGroup(hg1);
@@ -330,7 +320,7 @@ public class ViewCoursePage extends JFrame{
         
         layout.setHorizontalGroup(hseq1);
         layout.setVerticalGroup(vseq1);
-        
+        courseDropdown.addItem("");
         for (Course nextCourse: dpt.getTaManager().getCourses()){
 			courseDropdown.addItem(nextCourse.getCourseId());
 		}
@@ -345,32 +335,79 @@ public class ViewCoursePage extends JFrame{
 					createCourseActionPerformed();
         	}
 	    });
+        applyToJobs.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+					applyToJobActionPerformed();
+        	}
+	    });
 	}
 	
 	public void refreshdata(){
 		errorMessage.setText(error);
-		taHourText.setText("");
-		graderHourText.setText("");
-		creditText2.setText("");
-		courseIDText.setText("");
-		budgetText.setText("");
-		studentsEnrolledText.setText("");
-		taCapacityText.setText("");
-		graderCapacityText.setText("");
-			
-	}
-	public void addJobToListActionPerformed(){
-		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(error==null || error.length()==0){
+			taHourText.setText("");
+			graderHourText.setText("");
+			creditText2.setText("");
+			courseIDText.setText("");
+			budgetText.setText("");
+			studentsEnrolledText.setText("");
+			mcgillIDText.setText("");
+			courseDropdown.setSelectedIndex(0);
+			taGraderDropDown.setSelectedIndex(0);
+			idText.setText("--");
+			creditText.setText("--");
+			taJobText.setText("--");
+			graderJobText.setText("--");
+			experienceTextField.setText("");
+		}
 		
 	}
+	public void applyToJobActionPerformed(){
+		error = null;
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select a course to apply to.";
+			refreshdata();
+			return;
+		}
+		if(taGraderDropDown.getSelectedIndex()==0){
+			error = "Must select either a grader or ta position";
+			refreshdata();
+			return;
+		}
+		try{
+			JobOffer newJob = null;
+			for (Course nextCourse: dpt.getTaManager().getCourses()){
+				if (nextCourse.getCourseId().equals(courseDropdown.getSelectedItem().toString())){
+					if (taGraderDropDown.getSelectedIndex()==1){
+						newJob = new GraderOffer(nextCourse.getGraderWorkHours(),nextCourse,nextCourse.getBudget()/nextCourse.getGraderWorkHours());
+					}
+					if (taGraderDropDown.getSelectedIndex()==2){
+						newJob = new TaOffer(nextCourse.getTaWorkHours(), nextCourse, nextCourse.getBudget()/nextCourse.getTaWorkHours());
+					}
+				}
+			}
+			if(!(newJob == null)){
+				try{
+					tac.applyForJob(Integer.parseInt(mcgillIDText.getText()), experienceTextField.getText(), newJob);
+				} catch (NumberFormatException e1){
+					error = "Mcgill ID cannot be empty.";
+				}
+			}
+		} catch (InvalidInputException e){
+			error = e.getMessage();
+		}
+		refreshdata();
+	}
 	public void getInfoActionPerformed(){
+		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
 		try{
 			for (Course nextCourse: tac.ViewCourses()){
 				if (courseDropdown.getSelectedItem()!=null && courseDropdown.getSelectedItem().toString().equals(nextCourse.getCourseId())){
 					idText.setText(nextCourse.getCourseId());
 					creditText.setText(String.valueOf(nextCourse.getCoursCredit()));
-					taJobText.setText(String.valueOf(nextCourse.getTaWorkHours())+" hours");
+					taJobText.setText(String.valueOf(nextCourse.getTaWorkHours())+ " hours");
 					graderJobText.setText(String.valueOf(nextCourse.getGraderWorkHours())+" hours");
 				}
 			}
@@ -379,9 +416,10 @@ public class ViewCoursePage extends JFrame{
 		}
 	}
 	public void createCourseActionPerformed(){
+		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
 		try{
-			courseDropdown.addItem(tac.createJobPosting(Integer.parseInt(taHourText.getText()), Integer.parseInt(graderHourText.getText()), Integer.parseInt(creditText2.getText()), courseIDText.getText(), Integer.parseInt(budgetText.getText()), Integer.parseInt(studentsEnrolledText.getText()), new Instructor(), Integer.parseInt(taCapacityText.getText()), Integer.parseInt(graderCapacityText.getText())).getCourseId());
+			courseDropdown.addItem(tac.createJobPosting(Integer.parseInt(taHourText.getText()), Integer.parseInt(graderHourText.getText()), Integer.parseInt(creditText2.getText()), courseIDText.getText(), Integer.parseInt(budgetText.getText()), Integer.parseInt(studentsEnrolledText.getText()), new Instructor()).getCourseId());
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}
