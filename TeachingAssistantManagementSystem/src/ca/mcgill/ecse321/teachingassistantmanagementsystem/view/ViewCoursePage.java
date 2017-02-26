@@ -64,13 +64,9 @@ public class ViewCoursePage extends JFrame{
 	{
 		this.dpt = dpt;
 		initComponents();
-		refreshData();
+		refreshdata();
 	}
 	
-	private void refreshData() {
-
-		pack();
-	}
 	
 	private void initComponents() {
 	    // elements for error message
@@ -144,10 +140,6 @@ public class ViewCoursePage extends JFrame{
 		
 		//This will cause a bug for now since there are no courses to show
 		
-		/*for (Course nextCourse: dpt.getTaManager().getCourses()){
-			
-		courseDropdown.addItem(nextCourse.getCourseId());
-		}*/
 	    // layout		
 		JPanel panel = new JPanel();
 		panel.add(errorMessage);
@@ -310,15 +302,36 @@ public class ViewCoursePage extends JFrame{
         layout.setHorizontalGroup(hseq1);
         layout.setVerticalGroup(vseq1);
         
+        for (Course nextCourse: dpt.getTaManager().getCourses()){
+			courseDropdown.addItem(nextCourse.getCourseId());
+		}
         
         getInfoButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
 					getInfoActionPerformed();
         	}
 	    });
+        createCourseButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+					createCourseActionPerformed();
+        	}
+	    });
+	}
+	
+	public void refreshdata(){
+		errorMessage.setText(error);
+		taHourText.setText("");
+		graderHourText.setText("");
+		creditText2.setText("");
+		courseIDText.setText("");
+		budgetText.setText("");
+		studentsEnrolledText.setText("");
+		taCapacityText.setText("");
+		graderCapacityText.setText("");
+			
 	}
 	public void getInfoActionPerformed(){
-		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt.getTaManager());
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
 		try{
 			for (Course nextCourse: tac.ViewCourses()){
 				if (courseDropdown.getSelectedItem()!=null && courseDropdown.getSelectedItem().toString().equals(nextCourse.getCourseId())){
@@ -331,15 +344,16 @@ public class ViewCoursePage extends JFrame{
 		} catch (NullPointerException e) {
 			error = e.getMessage();
 		}
-		if(error.length()>0){
-			errorMessage.setText(error);
-		}
 	}
-	
-	public static void main(String[] args) {
-		 EventQueue.invokeLater(() -> {
-	            ViewCoursePage ex = new ViewCoursePage(dpt);
-	            ex.setVisible(true);
-	     });
+	public void createCourseActionPerformed(){
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		try{
+			courseDropdown.addItem(tac.createJobPosting(Integer.parseInt(taHourText.getText()), Integer.parseInt(graderHourText.getText()), Integer.parseInt(creditText2.getText()), courseIDText.getText(), Integer.parseInt(budgetText.getText()), Integer.parseInt(studentsEnrolledText.getText()), new Instructor(), Integer.parseInt(taCapacityText.getText()), Integer.parseInt(graderCapacityText.getText())).getCourseId());
+		} catch (InvalidInputException e){
+			error = e.getMessage();
+		}
+		
+		refreshdata();
 	}
 }
+	

@@ -30,15 +30,15 @@ public abstract class PersistenceXStream {
     	setAlias("applicant", Applicant.class);
     	setAlias("application", Application.class);
     	setAlias("department", Department.class);
-    	setAlias("grader offer", GraderOffer.class);
+    	setAlias("graderoffer", GraderOffer.class);
     	setAlias("instructor", Instructor.class);
-    	setAlias("job manager", JobManager.class);
-    	setAlias("job offer", JobOffer.class);
-    	setAlias("TA offer", TaOffer.class);
+    	setAlias("jobManager", JobManager.class);
+    	setAlias("jobOffer", JobOffer.class);
+    	setAlias("TAOffer", TaOffer.class);
     	
     	File file = new File(fileName);
         if (file.exists()) {
-            dpt = (Department) loadFromXMLwithXStream();
+            dpt=(Department) loadFromXMLwithXStream();
         } else {
         	try {
 	                file.createNewFile();

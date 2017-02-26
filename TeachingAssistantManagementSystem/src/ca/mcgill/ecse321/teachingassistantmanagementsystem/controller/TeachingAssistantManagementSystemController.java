@@ -2,9 +2,11 @@ package ca.mcgill.ecse321.teachingassistantmanagementsystem.controller;
 
 import java.util.List;
 
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.persistence.PersistenceXStream;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Applicant;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Application;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Course;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.GraderOffer;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Instructor;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobManager;
@@ -13,13 +15,15 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 
 public class TeachingAssistantManagementSystemController {
 	private JobManager jm;
-	public TeachingAssistantManagementSystemController(JobManager jm) {
-		  this.jm = jm;
+	private Department dp;
+	public TeachingAssistantManagementSystemController(Department dp) {
+		  this.dp = dp;
+		  this.jm = dp.getTaManager();
 	}
 	public List<Course> ViewCourses(){
 		return jm.getCourses();
 	}
-	public void createJobPosting(int taHours, int graderHours, int courseCredit, String courseID, int budget, int studentsEnrolled, Instructor courseInstructor, int taOfferCapacity, int graderOfferCapacity) throws InvalidInputException{
+	public Course createJobPosting(int taHours, int graderHours, int courseCredit, String courseID, int budget, int studentsEnrolled, Instructor courseInstructor, int taOfferCapacity, int graderOfferCapacity) throws InvalidInputException{
 		String error = "";
 		if(taOfferCapacity <1){
 			error = error + "TA offer capacity must atleast be one.";
@@ -52,6 +56,8 @@ public class TeachingAssistantManagementSystemController {
 		newCourse.addJob(newTaJob);
 		newCourse.addJob(newGraderJob);
 		jm.addCourse(newCourse);
+		PersistenceXStream.saveToXMLwithXStream(dp);
+		return newCourse;
 	}
 	public void applyForJob(Applicant newApplicant, String experience, JobOffer... allJobs) throws InvalidInputException{
 		String error = "";
@@ -71,5 +77,6 @@ public class TeachingAssistantManagementSystemController {
 		for(JobOffer nextJob : allJobs) {
 			nextJob.addApplication(newApplication);
 		}
+		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 }
