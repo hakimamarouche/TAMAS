@@ -371,7 +371,7 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		if(taGraderDropDown.getSelectedIndex()==0){
-			error = "Must select either a grader or ta position";
+			error = "Must select either a grader or ta position.";
 			refreshdata();
 			return;
 		}
@@ -391,7 +391,7 @@ public class ViewCoursePage extends JFrame{
 				try{
 					tac.applyForJob(Integer.parseInt(mcgillIDText.getText()), experienceTextField.getText(), newJob);
 				} catch (NumberFormatException e1){
-					error = "Mcgill ID cannot be empty.";
+					error = "Invalid Mcgill ID.";
 				}
 			}
 		} catch (InvalidInputException e){
