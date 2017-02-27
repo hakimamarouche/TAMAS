@@ -1,5 +1,15 @@
 <?php
 
+require_once __DIR__.'\..\persistence\PersistenceTams.php';
+require_once __DIR__.'\..\model\Department.php';
+require_once __DIR__.'\..\model\Course.php';
+require_once __DIR__.'\..\model\Instructor.php';
+require_once __DIR__.'\..\model\JobManager.php';
+require_once __DIR__.'\..\model\JobOffer.php';
+require_once __DIR__.'\..\model\Applicant.php';
+require_once __DIR__.'\..\model\Application.php';
+
+
 class Controller
 {
 	private $dpt;
