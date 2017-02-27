@@ -25,15 +25,24 @@
 		$dpt = $pm->loadDataFromStore();
 		$jm = $dpt->getTaManager();
 		
-// View Courses
-		
-		echo "<p>Course? <select name='coursespinner'>";
-		foreach ($jm->getCourses() as $course) {
-			echo "<option>" . $course->getCourseID() . "</option>";
-		} 
 		?>
 		
 		<form action="UpdateCourseInfo.php" method="post">
+			<?php 
+			if (isset($_SESSION['errorCourseInfo']) && !empty($_SESSION['errorCourseInfo']))
+			{
+				echo " * " . $_SESSION["errorCourseInfo"];
+			}
+			?>
+			
+			<p>Course? <select name='coursespinner'>
+			<?php 
+// 			foreach ($jm->getCourses() as $course) {
+// 				echo "<option>" . $course->getCourseID() . "</option>";
+// 			} 
+			?>
+			</select></p>
+			
 			<p>Course ID: 
 			<?php 
 			if (isset($_SESSION['courseID']) && !empty($_SESSION['courseID'])) {
@@ -70,17 +79,32 @@
 		</form>
 		
 		<form action="ApplyForJob.php" method="post">
+		
+			<p>Course? <select name='coursespinner'>
+			<?php 
+// 			foreach ($jm->getCourses() as $course) {
+// 				echo "<option>" . $course->getCourseID() . "</option>";
+// 			} 
+			?>
+			</select></p>
+			
 			<p>McGill ID? <input type="text" name="mcgill_id" />
 			<p>Experience? <input type="text" name="experience" />
 			<span class="error">
 			<?php 
-			if (isset($_SESSION['errorParticipantName']) && !empty($_SESSION['errorParticipantName'])) {
-				echo " * " . $_SESSION['errorParticipantName'];
+			if (isset($_SESSION['errorApply']) && !empty($_SESSION['errorApply'])) {
+				echo " * " . $_SESSION['errorApply'];
 			}
 			?>
 
 			</span> </p>
 			<p><input type="submit" value="Apply For Job"/></p>
 		</form>
+		
+		<form action="test.php" method="post">
+			<p><input type="submit" value="Deliverable 2 Add Course Debug"/></p>
+		</form>
+		
+		
 	</body>
 </html>

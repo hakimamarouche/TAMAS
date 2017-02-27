@@ -12,13 +12,14 @@ require_once __DIR__.'\..\model\Application.php';
 
 class Controller
 {
+	private $pm;
 	private $dpt;
 	private $jm;
 	
 	public function __construct()
 	{
-		$dptClass = new Department();
-		$dpt = $dptClass->newInstance(4);
+		$pm = new PersistenceTams();
+		$dpt = $pm->loadDataFromStore();
 		$jm = $dpt->getTaManager();
 	}
 	
@@ -52,5 +53,11 @@ class Controller
 		$applicant = new Applicant($mcgillID);
 		$application = new Application($experience, $applicant, $job);
 		$job->addApplication($application);
+	}
+	
+	public function testMakeCourse()
+	{
+		$instructor = new Instructor();
+		$jm->addCourseVia(120, 180, 3, ECSE321, 100, 5000, $instructor);
 	}
 }
