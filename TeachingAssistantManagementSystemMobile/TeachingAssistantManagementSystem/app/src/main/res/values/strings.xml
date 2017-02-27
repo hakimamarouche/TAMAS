@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Teaching Assistant Management System</string>
+    <string name="applyToJobButton">Apply</string>
+    <string name="studentIDview">McGill ID: </string>
+    <string name="course_description">Course Description:</string>
+    <string name="view_course">View Course</string>
+    <string name="jobsTA">TA: </string>
+    <string name="applyForJobView">Apply For Job Below</string>
+    <string name="experience">Experience: </string>
+    <string name="graderJob">Grader: </string>
+    <string name="credit">Credit: </string>
+</resources>
+
