@@ -101,9 +101,9 @@
 			<p><input type="submit" value="Apply For Job"/></p>
 		</form>
 		
-		<form action="test.php" method="post">
-			<p><input type="submit" value="Deliverable 2 Add Course Debug"/></p>
-		</form>
+<!-- 		<form action="test.php" method="post"> -->
+<!-- 			<p><input type="submit" value="Deliverable 2 Add Course Debug"/></p> -->
+<!-- 		</form> -->
 		
 		
 	</body>

@@ -55,9 +55,9 @@ class Controller
 		$job->addApplication($application);
 	}
 	
-	public function testMakeCourse()
-	{
-		$instructor = new Instructor();
-		$jm->addCourseVia(120, 180, 3, ECSE321, 100, 5000, $instructor);
-	}
+// 	public function testMakeCourse()
+// 	{
+// 		$instructor = new Instructor();
+// 		$jm->addCourseVia(120, 180, 3, ECSE321, 100, 5000, $instructor);
+// 	}
 }
