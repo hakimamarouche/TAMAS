@@ -346,7 +346,7 @@ public class ViewCoursePage extends JFrame{
         vg6.addComponent(studentsEnrolledText);
         
         
-        hg3.addComponent(createCourseButton);
+        hg4.addComponent(createCourseButton);
         vg7.addComponent(createCourseButton);
         
         //Write Review & accept application
@@ -363,8 +363,8 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(reviewStudentIdText);
         vg11.addComponent(reviewStudentIdText);
         
-        hg1.addComponent(createReviewButton);
-        vg12.addComponent(createReviewButton);
+        hg3.addComponent(createReviewButton);
+        vg10.addComponent(createReviewButton);
         
         hg2.addComponent(acceptApplicationButton);
         vg12.addComponent(acceptApplicationButton);
