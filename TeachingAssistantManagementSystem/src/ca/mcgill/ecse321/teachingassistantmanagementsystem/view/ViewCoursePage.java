@@ -68,6 +68,8 @@ public class ViewCoursePage extends JFrame{
 	private JTextField reviewStudentIdText;
 	private JButton createReviewButton;
 	private JButton acceptApplicationButton;
+	private JButton acceptOfferButton;
+	private JButton declineOfferButton;
 	
 	public ViewCoursePage(Department dpt)
 	{
@@ -83,6 +85,8 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    acceptOfferButton = new JButton();
+	    declineOfferButton = new JButton();
 	    acceptApplicationButton = new JButton();
 	    createReviewButton = new JButton();
 	    reviewLabel = new JLabel();
@@ -130,7 +134,9 @@ public class ViewCoursePage extends JFrame{
 	    
 	    
 	    // default text
-	    acceptApplicationButton.setText("Accept application");
+	    acceptApplicationButton.setText("Offer Job");
+	    acceptOfferButton.setText("Accept Offer");
+	    declineOfferButton.setText("Decline Offer");
 	    reviewLabel.setText("Review: ");
 	    reviewText.setText("");
 	    reviewStudentIdLabel.setText("Student ID: ");
@@ -173,6 +179,8 @@ public class ViewCoursePage extends JFrame{
 		
 	    // layout		
 		JPanel panel = new JPanel();
+		panel.add(acceptOfferButton);
+		panel.add(declineOfferButton);
 		panel.add(acceptApplicationButton);
 		panel.add(reviewLabel);
 		panel.add(reviewText);
@@ -361,6 +369,15 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(acceptApplicationButton);
         vg12.addComponent(acceptApplicationButton);
         
+        //Accept and decline offer
+        
+        hg3.addComponent(acceptOfferButton);
+        vg11.addComponent(acceptOfferButton);
+        
+        hg4.addComponent(declineOfferButton);
+        vg11.addComponent(declineOfferButton);
+        
+        
         GroupLayout.SequentialGroup hseq1 = layout.createSequentialGroup();
         hseq1.addGroup(hg1);
         hseq1.addGroup(hg2);
@@ -414,6 +431,16 @@ public class ViewCoursePage extends JFrame{
         		acceptApplicationActionPerformed();
         	}
 	    });
+        acceptOfferButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		acceptOfferActionPerformed();
+        	}
+	    });
+        declineOfferButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		declineOfferActionPerformed();
+        	}
+	    });
 	}
 	
 	public void refreshdata(){
@@ -437,6 +464,36 @@ public class ViewCoursePage extends JFrame{
 			reviewStudentIdText.setText("");
 		}
 		
+	}
+	public void acceptOfferActionPerformed(){
+		error = null;
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select the course the reviewed TA or grader worked on.";
+			refreshdata();
+			return;
+		}
+		try { 
+			tac.acceptOffer(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+		} catch (InvalidInputException e){
+			error = e.getMessage();
+		}
+		refreshdata();
+	}
+	
+	public void declineOfferActionPerformed(){
+		error = null;
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select the course the reviewed TA or grader worked on.";
+			refreshdata();
+			return;
+		}
+		try{
+			tac.declineOffer(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+		}catch(InvalidInputException e){
+			error = e.getMessage();
+		}
 	}
 	public void acceptApplicationActionPerformed(){
 		error = null;

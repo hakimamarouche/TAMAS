@@ -15,7 +15,7 @@ public class Application
   private String experience;
 
   //Application State Machines
-  public enum Status { Default, Accepted }
+  public enum Status { UnderReview, Offered, Accepted, Declined }
   private Status status;
 
   //Application Associations
@@ -39,7 +39,7 @@ public class Application
     {
       throw new RuntimeException("Unable to create application due to jobs");
     }
-    setStatus(Status.Default);
+    setStatus(Status.UnderReview);
   }
 
   //------------------------

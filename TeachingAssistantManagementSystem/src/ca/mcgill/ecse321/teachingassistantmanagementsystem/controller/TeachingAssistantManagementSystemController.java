@@ -73,7 +73,7 @@ public class TeachingAssistantManagementSystemController {
 		}
 		Applicant newApplicant = new Applicant(mcgillID);
 		Application newApplication = new Application(experience, newApplicant, job );
-		newApplication.setStatus(Status.Default);
+		newApplication.setStatus(Status.UnderReview);
 		job.addApplication(newApplication);
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
@@ -118,7 +118,57 @@ public class TeachingAssistantManagementSystemController {
 				for (JobOffer nextOffer : nextCourse.getJob()){
 					for (Application nextApp : nextOffer.getApplications()){
 						if(nextApp.getApplicant().getMcgillId() == studentID){
+							nextApp.setStatus(Status.Offered);
+						}
+					}
+				}
+			}
+		}
+		PersistenceXStream.saveToXMLwithXStream(dp);
+	}
+	public void acceptOffer(String courseID, int studentID) throws InvalidInputException{
+		String error = "";
+		if(courseID == null){
+			error = error + "Course ID can not be empty.";
+		}
+		if(studentID< 10000000){
+			error = error + "Student ID invalid.";
+		}
+		if(error.length()>0){
+			throw new InvalidInputException(error);
+		}
+		for(Course nextCourse: jm.getCourses()){
+			if(nextCourse.getCourseId().equals(courseID)){
+				for (JobOffer nextOffer : nextCourse.getJob()){
+					for (Application nextApp : nextOffer.getApplications()){
+						if (nextApp.getApplicant().getMcgillId() == studentID){
+							nextOffer.setAcceptedApplicantId(studentID);
 							nextApp.setStatus(Status.Accepted);
+						}
+					}
+				}
+			}
+		}
+		PersistenceXStream.saveToXMLwithXStream(dp);
+	}
+	
+	public void declineOffer(String courseID, int studentID) throws InvalidInputException{
+		String error = "";
+		if(courseID == null){
+			error = error + "Course ID can not be empty.";
+		}
+		if(studentID< 10000000){
+			error = error + "Student ID invalid.";
+		}
+		if(error.length()>0){
+			throw new InvalidInputException(error);
+		}
+		for(Course nextCourse: jm.getCourses()){
+			if(nextCourse.getCourseId().equals(courseID)){
+				for (JobOffer nextOffer : nextCourse.getJob()){
+					for (Application nextApp : nextOffer.getApplications()){
+						if (nextApp.getApplicant().getMcgillId() == studentID){
+							nextApp.setStatus(Status.Declined);
 						}
 					}
 				}
