@@ -447,7 +447,7 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		try {
-			tac.allocateApplicants(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			tac.offerJob(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}

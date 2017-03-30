@@ -100,7 +100,7 @@ public class TeachingAssistantManagementSystemController {
 		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
-	public void allocateApplicants(String courseID, int studentID) throws InvalidInputException{
+	public void offerJob(String courseID, int studentID) throws InvalidInputException{
 		String error = "";
 		if(courseID == null){
 			error = error + "Course ID can not be empty.";
