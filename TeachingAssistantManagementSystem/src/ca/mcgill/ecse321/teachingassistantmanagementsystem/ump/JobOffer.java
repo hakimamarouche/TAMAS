@@ -14,6 +14,8 @@ public class JobOffer
 
   //JobOffer Attributes
   private int workHours;
+  private String review;
+  private int acceptedApplicantId;
 
   //JobOffer Associations
   private Course course;
@@ -23,9 +25,11 @@ public class JobOffer
   // CONSTRUCTOR
   //------------------------
 
-  public JobOffer(int aWorkHours, Course aCourse)
+  public JobOffer(int aWorkHours, String aReview, int aAcceptedApplicantId, Course aCourse)
   {
     workHours = aWorkHours;
+    review = aReview;
+    acceptedApplicantId = aAcceptedApplicantId;
     boolean didAddCourse = setCourse(aCourse);
     if (!didAddCourse)
     {
@@ -46,9 +50,35 @@ public class JobOffer
     return wasSet;
   }
 
+  public boolean setReview(String aReview)
+  {
+    boolean wasSet = false;
+    review = aReview;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setAcceptedApplicantId(int aAcceptedApplicantId)
+  {
+    boolean wasSet = false;
+    acceptedApplicantId = aAcceptedApplicantId;
+    wasSet = true;
+    return wasSet;
+  }
+
   public int getWorkHours()
   {
     return workHours;
+  }
+
+  public String getReview()
+  {
+    return review;
+  }
+
+  public int getAcceptedApplicantId()
+  {
+    return acceptedApplicantId;
   }
 
   public Course getCourse()
@@ -196,7 +226,9 @@ public class JobOffer
   {
     String outputString = "";
     return super.toString() + "["+
-            "workHours" + ":" + getWorkHours()+ "]" + System.getProperties().getProperty("line.separator") +
+            "workHours" + ":" + getWorkHours()+ "," +
+            "review" + ":" + getReview()+ "," +
+            "acceptedApplicantId" + ":" + getAcceptedApplicantId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "course = "+(getCourse()!=null?Integer.toHexString(System.identityHashCode(getCourse())):"null")
      + outputString;
   }

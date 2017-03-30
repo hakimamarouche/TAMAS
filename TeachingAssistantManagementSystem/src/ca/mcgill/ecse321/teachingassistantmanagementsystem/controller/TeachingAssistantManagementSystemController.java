@@ -46,8 +46,8 @@ public class TeachingAssistantManagementSystemController {
 			error = error + "Course size is too small.";
 		}
 		Course newCourse = new Course(taHours, graderHours,courseCredit, courseID, budget, studentsEnrolled, jm, courseInstructor);
-		TaOffer newTaJob = new TaOffer(taHours,newCourse, newCourse.getBudget()/taHours);
-		GraderOffer newGraderJob = new GraderOffer(graderHours, newCourse, newCourse.getBudget()/graderHours);
+		TaOffer newTaJob = new TaOffer(taHours,null,0, newCourse, newCourse.getBudget()/taHours);
+		GraderOffer newGraderJob = new GraderOffer(graderHours,null,0, newCourse, newCourse.getBudget()/graderHours);
 		newCourse.addJob(newTaJob);
 		newCourse.addJob(newGraderJob);
 		jm.addCourse(newCourse);
@@ -71,6 +71,31 @@ public class TeachingAssistantManagementSystemController {
 		Applicant newApplicant = new Applicant(mcgillID);
 		Application newApplication = new Application(experience, newApplicant, job );
 		job.addApplication(newApplication);
+		PersistenceXStream.saveToXMLwithXStream(dp);
+	}
+	public void writeReview(String courseID, String review, int studentID) throws InvalidInputException{
+		String error = "";
+		if (courseID == null){
+			error = error + "Course ID can not be empty.";			
+		}
+		if(review.length()<50){
+			error = error + "Review must be atleast 50 characters.";
+		}
+		if(studentID <10000000){
+			error = error + "studentID must be valid";
+		}
+		if (error.length()>0){
+			throw new InvalidInputException(error);
+		}
+		for (Course nextCourse : jm.getCourses()){
+			if (nextCourse.getCourseId().equals(courseID)){
+				for (JobOffer nextOffer : nextCourse.getJob()){
+					if (nextOffer.getAcceptedApplicantId() == studentID){
+						nextOffer.setReview(review);
+					}
+				}
+			}
+		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 }

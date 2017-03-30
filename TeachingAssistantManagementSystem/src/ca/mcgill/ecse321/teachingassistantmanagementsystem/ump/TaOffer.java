@@ -4,7 +4,7 @@
 package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
 import java.util.*;
 
-// line 41 "../../../../../TeachingAssistantManagementSystem.ump"
+// line 43 "../../../../../TeachingAssistantManagementSystem.ump"
 public class TaOffer extends JobOffer
 {
 
@@ -19,9 +19,9 @@ public class TaOffer extends JobOffer
   // CONSTRUCTOR
   //------------------------
 
-  public TaOffer(int aWorkHours, Course aCourse, int aCapacity)
+  public TaOffer(int aWorkHours, String aReview, int aAcceptedApplicantId, Course aCourse, int aCapacity)
   {
-    super(aWorkHours, aCourse);
+    super(aWorkHours, aReview, aAcceptedApplicantId, aCourse);
     capacity = aCapacity;
   }
 

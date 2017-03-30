@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
 
-// line 31 "../../../../../TeachingAssistantManagementSystem.ump"
+// line 33 "../../../../../TeachingAssistantManagementSystem.ump"
 public class Department
 {
 

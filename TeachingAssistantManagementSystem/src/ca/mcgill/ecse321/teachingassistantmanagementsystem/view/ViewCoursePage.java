@@ -62,6 +62,12 @@ public class ViewCoursePage extends JFrame{
 	private JLabel mcgillIDLabel;
 	private JTextField mcgillIDText;
 	private JComboBox<String> taGraderDropDown;
+	private JLabel reviewLabel;
+	private JTextField reviewText;
+	private JLabel reviewStudentIdLabel;
+	private JTextField reviewStudentIdText;
+	private JButton createReviewButton;
+	
 	public ViewCoursePage(Department dpt)
 	{
 		this.dpt = dpt;
@@ -76,6 +82,11 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    createReviewButton = new JButton();
+	    reviewLabel = new JLabel();
+	    reviewText = new JTextField();
+	    reviewStudentIdLabel = new JLabel();
+	    reviewStudentIdText = new JTextField();
 	    mcgillIDLabel = new JLabel();
 	    mcgillIDText = new JTextField();
 	    experienceLabel = new JLabel();
@@ -108,12 +119,19 @@ public class ViewCoursePage extends JFrame{
 		createCourseButton = new JButton();
 		
 		
+		
 	    
 	    // global settings and listeners
 	    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    setTitle("Ta Management System.");
+	    setSize(600, 400);
+	    
 	    
 	    // default text
+	    reviewLabel.setText("Review: ");
+	    reviewText.setText("");
+	    reviewStudentIdLabel.setText("Student ID: ");
+	    reviewStudentIdText.setText("");
 	    dropdownLabel.setText("Course: " );
 	    idLabel.setText("ID: " );
 		idText.setText("--");
@@ -146,11 +164,17 @@ public class ViewCoursePage extends JFrame{
 		applyToJobs.setText("Apply to job");
 		mcgillIDLabel.setText("Applicant ID:");
 		mcgillIDText.setText("");
+		createReviewButton.setText("Create Review");
 		
 		//This will cause a bug for now since there are no courses to show
 		
 	    // layout		
 		JPanel panel = new JPanel();
+		panel.add(reviewLabel);
+		panel.add(reviewText);
+		panel.add(reviewStudentIdLabel);
+		panel.add(reviewStudentIdText);
+		panel.add(createReviewButton);
 		panel.add(errorMessage);
 		panel.add(dropdownLabel);
 		panel.add(courseDropdown);
@@ -177,7 +201,7 @@ public class ViewCoursePage extends JFrame{
 		panel.add(budgetText);
 		panel.add(studentsEnrolledLabel);
 		panel.add(studentsEnrolledText);
-
+	
 		panel.add(createCourseButton);
 		panel.add(applyToJobs);
 		panel.add(experienceLabel);
@@ -204,9 +228,17 @@ public class ViewCoursePage extends JFrame{
         GroupLayout.Group vg7 = layout.createParallelGroup();
         GroupLayout.Group vg8 = layout.createParallelGroup();
         GroupLayout.Group vg9 = layout.createParallelGroup();
+        GroupLayout.Group vg10 = layout.createParallelGroup();
+        GroupLayout.Group vg11 = layout.createParallelGroup();
+        GroupLayout.Group vg12 = layout.createParallelGroup();
+        
+        
+        //Error message
         
         hg1.addComponent(errorMessage);
         vg0.addComponent(errorMessage);
+        
+        //Get info
         
         hg1.addComponent(dropdownLabel);
         vg1.addComponent(dropdownLabel);
@@ -238,6 +270,8 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(graderJobText);
         vg5.addComponent(graderJobText);
         
+        //Apply to job
+        
         hg1.addComponent(getInfoButton);
         vg6.addComponent(getInfoButton);
         
@@ -256,8 +290,12 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(experienceTextField);
         vg8.addComponent(experienceTextField);
         
+        
+        
         hg2.addComponent(applyToJobs);
         vg9.addComponent(applyToJobs);
+        
+      //Create course
         
         hg3.addComponent(taHourLabel);
         vg1.addComponent(taHourLabel);
@@ -299,6 +337,23 @@ public class ViewCoursePage extends JFrame{
         hg3.addComponent(createCourseButton);
         vg7.addComponent(createCourseButton);
         
+        //Write Review
+        
+        hg1.addComponent(reviewLabel);	
+        vg10.addComponent(reviewLabel);
+        
+        hg2.addComponent(reviewText);
+        vg10.addComponent(reviewText);
+        
+        hg1.addComponent(reviewStudentIdLabel);
+        vg11.addComponent(reviewStudentIdLabel);
+        
+        hg2.addComponent(reviewStudentIdText);
+        vg11.addComponent(reviewStudentIdText);
+        
+        hg1.addComponent(createReviewButton);
+        vg12.addComponent(createReviewButton);
+        
         GroupLayout.SequentialGroup hseq1 = layout.createSequentialGroup();
         hseq1.addGroup(hg1);
         hseq1.addGroup(hg2);
@@ -316,7 +371,9 @@ public class ViewCoursePage extends JFrame{
         vseq1.addGroup(vg7);
         vseq1.addGroup(vg8);
         vseq1.addGroup(vg9);
-        
+        vseq1.addGroup(vg10);
+        vseq1.addGroup(vg11);
+        vseq1.addGroup(vg12);
         
         layout.setHorizontalGroup(hseq1);
         layout.setVerticalGroup(vseq1);
@@ -340,6 +397,11 @@ public class ViewCoursePage extends JFrame{
 					applyToJobActionPerformed();
         	}
 	    });
+        createReviewButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+					createReviewActionPerformed();
+        	}
+	    });
 	}
 	
 	public void refreshdata(){
@@ -359,9 +421,28 @@ public class ViewCoursePage extends JFrame{
 			taJobText.setText("--");
 			graderJobText.setText("--");
 			experienceTextField.setText("");
+			reviewText.setText("");
+			reviewStudentIdText.setText("");
 		}
 		
 	}
+	public void createReviewActionPerformed(){
+		error = null;
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select the course the reviewed TA or grader worked on.";
+			refreshdata();
+			return;
+		}
+		try {
+			tac.writeReview(courseDropdown.getSelectedItem().toString(),reviewText.toString(), Integer.parseInt(reviewStudentIdText.getText()));
+		} catch (InvalidInputException e){
+			error = e.getMessage();
+		}
+		refreshdata();
+		
+	}
+	
 	public void applyToJobActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
@@ -380,10 +461,10 @@ public class ViewCoursePage extends JFrame{
 			for (Course nextCourse: dpt.getTaManager().getCourses()){
 				if (nextCourse.getCourseId().equals(courseDropdown.getSelectedItem().toString())){
 					if (taGraderDropDown.getSelectedIndex()==1){
-						newJob = new GraderOffer(nextCourse.getGraderWorkHours(),nextCourse,nextCourse.getBudget()/nextCourse.getGraderWorkHours());
+						newJob = new GraderOffer(nextCourse.getGraderWorkHours(),null,0,nextCourse,nextCourse.getBudget()/nextCourse.getGraderWorkHours());
 					}
 					if (taGraderDropDown.getSelectedIndex()==2){
-						newJob = new TaOffer(nextCourse.getTaWorkHours(), nextCourse, nextCourse.getBudget()/nextCourse.getTaWorkHours());
+						newJob = new TaOffer(nextCourse.getTaWorkHours(),null,0, nextCourse, nextCourse.getBudget()/nextCourse.getTaWorkHours());
 					}
 				}
 			}

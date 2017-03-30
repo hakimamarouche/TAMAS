@@ -22,6 +22,8 @@ class Applicant{
 
 class JobOffer{
 	Integer workHours;
+	String review;
+	Integer acceptedApplicantId;
 }
 
 class Instructor{
@@ -29,7 +31,7 @@ class Instructor{
 }
 
 class Department{
- 1 <@>- 1 JobManager taManager;
+ 	1 <@>- 1 JobManager taManager;
 }
 
 class Application{
