@@ -67,6 +67,7 @@ public class ViewCoursePage extends JFrame{
 	private JLabel reviewStudentIdLabel;
 	private JTextField reviewStudentIdText;
 	private JButton createReviewButton;
+	private JButton acceptApplicationButton;
 	
 	public ViewCoursePage(Department dpt)
 	{
@@ -82,6 +83,7 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    acceptApplicationButton = new JButton();
 	    createReviewButton = new JButton();
 	    reviewLabel = new JLabel();
 	    reviewText = new JTextField();
@@ -128,6 +130,7 @@ public class ViewCoursePage extends JFrame{
 	    
 	    
 	    // default text
+	    acceptApplicationButton.setText("Accept application");
 	    reviewLabel.setText("Review: ");
 	    reviewText.setText("");
 	    reviewStudentIdLabel.setText("Student ID: ");
@@ -170,6 +173,7 @@ public class ViewCoursePage extends JFrame{
 		
 	    // layout		
 		JPanel panel = new JPanel();
+		panel.add(acceptApplicationButton);
 		panel.add(reviewLabel);
 		panel.add(reviewText);
 		panel.add(reviewStudentIdLabel);
@@ -337,7 +341,7 @@ public class ViewCoursePage extends JFrame{
         hg3.addComponent(createCourseButton);
         vg7.addComponent(createCourseButton);
         
-        //Write Review
+        //Write Review & accept application
         
         hg1.addComponent(reviewLabel);	
         vg10.addComponent(reviewLabel);
@@ -353,6 +357,9 @@ public class ViewCoursePage extends JFrame{
         
         hg1.addComponent(createReviewButton);
         vg12.addComponent(createReviewButton);
+        
+        hg2.addComponent(acceptApplicationButton);
+        vg12.addComponent(acceptApplicationButton);
         
         GroupLayout.SequentialGroup hseq1 = layout.createSequentialGroup();
         hseq1.addGroup(hg1);
@@ -402,6 +409,11 @@ public class ViewCoursePage extends JFrame{
 					createReviewActionPerformed();
         	}
 	    });
+        acceptApplicationButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		acceptApplicationActionPerformed();
+        	}
+	    });
 	}
 	
 	public void refreshdata(){
@@ -425,6 +437,21 @@ public class ViewCoursePage extends JFrame{
 			reviewStudentIdText.setText("");
 		}
 		
+	}
+	public void acceptApplicationActionPerformed(){
+		error = null;
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select the course the reviewed TA or grader worked on.";
+			refreshdata();
+			return;
+		}
+		try {
+			tac.allocateApplicants(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+		} catch (InvalidInputException e){
+			error = e.getMessage();
+		}
+		refreshdata();
 	}
 	public void createReviewActionPerformed(){
 		error = null;

@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Instructor;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobManager;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobOffer;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Application.Status;
 
 public class TeachingAssistantManagementSystemController {
 	private JobManager jm;
@@ -70,6 +71,7 @@ public class TeachingAssistantManagementSystemController {
 		}
 		Applicant newApplicant = new Applicant(mcgillID);
 		Application newApplication = new Application(experience, newApplicant, job );
+		newApplication.setStatus(Status.Default);
 		job.addApplication(newApplication);
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
@@ -82,7 +84,7 @@ public class TeachingAssistantManagementSystemController {
 			error = error + "Review must be atleast 50 characters.";
 		}
 		if(studentID <10000000){
-			error = error + "studentID must be valid";
+			error = error + "Student ID must be valid.";
 		}
 		if (error.length()>0){
 			throw new InvalidInputException(error);
@@ -97,5 +99,28 @@ public class TeachingAssistantManagementSystemController {
 			}
 		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
+	}
+	public void allocateApplicants(String courseID, int studentID) throws InvalidInputException{
+		String error = "";
+		if(courseID == null){
+			error = error + "Course ID can not be empty.";
+		}
+		if(studentID< 10000000){
+			error = error + "Student ID invalid.";
+		}
+		if(error.length()>0){
+			throw new InvalidInputException(error);
+		}
+		for (Course nextCourse : jm.getCourses()){
+			if(nextCourse.getCourseId().equals(courseID)){
+				for (JobOffer nextOffer : nextCourse.getJob()){
+					for (Application nextApp : nextOffer.getApplications()){
+						if(nextApp.getApplicant().getMcgillId() == studentID){
+							nextApp.setStatus(Status.Accepted);
+						}
+					}
+				}
+			}
+		}
 	}
 }

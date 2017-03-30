@@ -14,6 +14,10 @@ public class Application
   //Application Attributes
   private String experience;
 
+  //Application State Machines
+  public enum Status { Default, Accepted }
+  private Status status;
+
   //Application Associations
   private Applicant applicant;
   private JobOffer jobs;
@@ -35,6 +39,7 @@ public class Application
     {
       throw new RuntimeException("Unable to create application due to jobs");
     }
+    setStatus(Status.Default);
   }
 
   //------------------------
@@ -52,6 +57,23 @@ public class Application
   public String getExperience()
   {
     return experience;
+  }
+
+  public String getStatusFullName()
+  {
+    String answer = status.toString();
+    return answer;
+  }
+
+  public Status getStatus()
+  {
+    return status;
+  }
+
+  public boolean setStatus(Status aStatus)
+  {
+    status = aStatus;
+    return true;
   }
 
   public Applicant getApplicant()

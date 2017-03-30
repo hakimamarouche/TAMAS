@@ -38,6 +38,7 @@ class Application{
 	*--1 Applicant applicant;
 	*--1 JobOffer jobs;	
 	String experience;
+	status {Default{} Accepted{}}
 }
 
 class TaOffer{

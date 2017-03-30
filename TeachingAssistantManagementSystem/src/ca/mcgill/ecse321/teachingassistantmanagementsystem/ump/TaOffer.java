@@ -4,7 +4,7 @@
 package ca.mcgill.ecse321.teachingassistantmanagementsystem.ump;
 import java.util.*;
 
-// line 43 "../../../../../TeachingAssistantManagementSystem.ump"
+// line 44 "../../../../../TeachingAssistantManagementSystem.ump"
 public class TaOffer extends JobOffer
 {
 
