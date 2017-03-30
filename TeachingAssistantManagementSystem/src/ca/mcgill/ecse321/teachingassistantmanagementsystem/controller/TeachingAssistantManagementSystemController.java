@@ -49,6 +49,8 @@ public class TeachingAssistantManagementSystemController {
 		Course newCourse = new Course(taHours, graderHours,courseCredit, courseID, budget, studentsEnrolled, jm, courseInstructor);
 		TaOffer newTaJob = new TaOffer(taHours,null,0, newCourse, newCourse.getBudget()/taHours);
 		GraderOffer newGraderJob = new GraderOffer(graderHours,null,0, newCourse, newCourse.getBudget()/graderHours);
+		newTaJob.setCapacity(((budget/2)/jm.getHourlyRate())/taHours);
+		newGraderJob.setCapacity(((budget/2)/jm.getHourlyRate())/graderHours);
 		newCourse.addJob(newTaJob);
 		newCourse.addJob(newGraderJob);
 		jm.addCourse(newCourse);
@@ -122,5 +124,7 @@ public class TeachingAssistantManagementSystemController {
 				}
 			}
 		}
+		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
+	
 }
