@@ -146,9 +146,9 @@ public class ViewCoursePage extends JFrame{
 		idText.setText("--");
 		creditLabel.setText("Credits: " );
 		creditText.setText("--");
-		taJobLabel.setText("TA Jobs: " );
+		taJobLabel.setText("TA Hours: " );
 		taJobText.setText("--");
-		graderJobLabel.setText("Grader Jobs: " );
+		graderJobLabel.setText("Grader Hours: " );
 		graderJobText.setText("--");
 		getInfoButton.setText("Get course info");
 		errorMessage.setText("--");
@@ -178,6 +178,7 @@ public class ViewCoursePage extends JFrame{
 		//This will cause a bug for now since there are no courses to show
 		
 	    // layout		
+		
 		JPanel panel = new JPanel();
 		panel.add(acceptOfferButton);
 		panel.add(declineOfferButton);
