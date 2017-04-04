@@ -16,5 +16,6 @@ public class Tab2AcceptJob extends Fragment {
         View rootView = inflater.inflate(R.layout.tab2acceptjob, container, false);
 
         return rootView;
+        //Added comment here.
     }
 }
