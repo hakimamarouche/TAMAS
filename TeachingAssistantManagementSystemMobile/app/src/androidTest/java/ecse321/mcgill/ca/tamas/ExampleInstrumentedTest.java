@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.teachingassistantmanagementsystem;
+package ecse321.mcgill.ca.tamas;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ca.mcgill.ecse321.teachingassistantmanagementsystem", appContext.getPackageName());
+        assertEquals("ecse321.mcgill.ca.tamas", appContext.getPackageName());
     }
 }

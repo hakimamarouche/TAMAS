@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">Teaching Assistant Management System</string>
-    <string name="applyToJobButton">Apply</string>
-    <string name="studentIDview">McGill ID: </string>
-    <string name="course_description">Course Description:</string>
+    <string name="app_name">TAMAS</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="applyToJobButton">APPLY</string>
     <string name="view_course">View Course</string>
-    <string name="jobsTA">TA: </string>
+    <string name="course_description">Course Description:</string>
+    <string name="credit">Credit:</string>
+    <string name="experience">Experience</string>
+    <string name="studentIDview">McGill ID:</string>
+    <string name="jobsTA">TA:</string>
+    <string name="graderJob">Grader:</string>
     <string name="applyForJobView">Apply For Job Below</string>
-    <string name="experience">Experience: </string>
-    <string name="graderJob">Grader: </string>
-    <string name="credit">Credit: </string>
 </resources>
-
