@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //setting up a temp spinner to test
     private void viewCoursesSpinner() {
        this.arraySpinner = new String [] {"ECSE321"};
-
+        //added this comment to see if commit is working
         Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
