@@ -24,7 +24,7 @@ import static ca.mcgill.ecse321.teachingassistantmanagementsystem.R.string.cours
 import static ca.mcgill.ecse321.teachingassistantmanagementsystem.R.string.experience;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String [] arraySpinner;
     public JobManager jm = null;
     public Course c;
     private String fileName;
@@ -36,24 +36,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tempViewForSpinner();
+        viewCoursesSpinner();
 
     }
     //setting up a temp spinner to test
-    private void tempViewForSpinner() {
-        Spinner temp = (Spinner) findViewById(R.id.viewCoursesSpinner);
-        ArrayAdapter <String> tempAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        tempAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    private void viewCoursesSpinner() {
+       this.arraySpinner = new String [] {"ECSE321"};
 
-        String [] stringArray = {"ECSE321", "ECSE421", "ECSE223"};
-        for (String e: stringArray) {
-            tempAdapter.add(e);
-        }
-        temp.setAdapter(tempAdapter);
+        Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapter);
+
     }
 
     //App crashes if I use this method. Still need to work on it.
-    private void createJobPosting() throws InvalidInputException {
+    /*private void createJobPosting() throws InvalidInputException {
         TeachingAssistantManagementSystemController crp = new TeachingAssistantManagementSystemController(dp);
         crp.createJobPosting(1,2,2, "202", 23, 32, new Instructor());
 
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
            viewCoursesAdapter.add((CharSequence) e.getCourseId());
         }
         viewCourses.setAdapter(viewCoursesAdapter);
-    }
+    }*/
 
     public void refreshData() {
         EditText id = (EditText) findViewById(R.id.mcgillID);
