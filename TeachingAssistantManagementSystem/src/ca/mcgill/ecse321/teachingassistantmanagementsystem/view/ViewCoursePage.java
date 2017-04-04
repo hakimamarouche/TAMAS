@@ -226,6 +226,7 @@ public class ViewCoursePage extends JFrame{
         layout.setAutoCreateContainerGaps(true);
         panel.setLayout(layout);
         
+        GroupLayout.Group hg0 = layout.createParallelGroup();
         GroupLayout.Group hg1 = layout.createParallelGroup();
         GroupLayout.Group hg2 = layout.createParallelGroup();
         GroupLayout.Group hg3 = layout.createParallelGroup();
@@ -248,7 +249,7 @@ public class ViewCoursePage extends JFrame{
         
         //Error message
         
-        hg1.addComponent(errorMessage);
+        hg0.addComponent(errorMessage);
         vg0.addComponent(errorMessage);
         
         //Get info
@@ -400,7 +401,9 @@ public class ViewCoursePage extends JFrame{
         vseq1.addGroup(vg11);
         vseq1.addGroup(vg12);
         
-        layout.setHorizontalGroup(hseq1);
+        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(errorMessage).addGroup(hseq1));
+        
+       
         layout.setVerticalGroup(vseq1);
         courseDropdown.addItem("");
         for (Course nextCourse: dpt.getTaManager().getCourses()){
@@ -464,7 +467,7 @@ public class ViewCoursePage extends JFrame{
 			reviewText.setText("");
 			reviewStudentIdText.setText("");
 		}
-		
+		pack();
 	}
 	public void acceptOfferActionPerformed(){
 		error = null;

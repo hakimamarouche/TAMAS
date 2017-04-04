@@ -28,23 +28,23 @@ public class TeachingAssistantManagementSystemController {
 		String error = "";
 		
 		if(courseID == null){
-			error = error + "Course ID can not be empty.";
+			error = error + "Course ID can not be empty. ";
 		}
 		
 		if(((taHours* jm.getHourlyRate() + graderHours* jm.getHourlyRate())>budget)){
-			error = error + "Budget not sufficient to support all offers.";
+			error = error + "Budget not sufficient to support all offers. ";
 		}
 		if(courseCredit<1 || courseCredit > 5){
-			error = error + "Course credit invalid.";
+			error = error + "Course credit invalid. ";
 		}
 		if (courseInstructor == null){
-			error = error + "Course instructor selection invalid.";
+			error = error + "Course instructor selection invalid. ";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
 		}
 		if(studentsEnrolled<40){
-			error = error + "Course size is too small.";
+			error = error + "Course size is too small. ";
 		}
 		Course newCourse = new Course(taHours, graderHours,courseCredit, courseID, budget, studentsEnrolled, jm, courseInstructor);
 		TaOffer newTaJob = new TaOffer(taHours,null,0, newCourse, newCourse.getBudget()/taHours);
@@ -60,13 +60,13 @@ public class TeachingAssistantManagementSystemController {
 	public void applyForJob(int mcgillID, String experience, JobOffer job) throws InvalidInputException{
 		String error = "";
 		if(mcgillID<10000000){
-			error = error + "Invalid mcgill ID.";
+			error = error + "Invalid mcgill ID. ";
 		}
-		if(experience == null || experience.length()<30){
-			error = error + "Experience must be atleast 30 characters long.";
+		if(experience == null || experience.length()<5){
+			error = error + "Experience must be atleast 5 characters long. ";
 		}
 		if(job == null){
-			error = error + "Select a job to apply to.";
+			error = error + "Select a job to apply to. ";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
@@ -80,13 +80,13 @@ public class TeachingAssistantManagementSystemController {
 	public void writeReview(String courseID, String review, int studentID) throws InvalidInputException{
 		String error = "";
 		if (courseID == null){
-			error = error + "Course ID can not be empty.";			
+			error = error + "Course ID can not be empty. ";			
 		}
-		if(review.length()<50){
-			error = error + "Review must be atleast 50 characters.";
+		if(review.length()<25){
+			error = error + "Review must be atleast 25 characters. ";
 		}
 		if(studentID <10000000){
-			error = error + "Student ID must be valid.";
+			error = error + "Student ID must be valid. ";
 		}
 		if (error.length()>0){
 			throw new InvalidInputException(error);
@@ -105,10 +105,10 @@ public class TeachingAssistantManagementSystemController {
 	public void offerJob(String courseID, int studentID) throws InvalidInputException{
 		String error = "";
 		if(courseID == null){
-			error = error + "Course ID can not be empty.";
+			error = error + "Course ID can not be empty. ";
 		}
 		if(studentID< 10000000){
-			error = error + "Student ID invalid.";
+			error = error + "Student ID invalid. ";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
@@ -129,10 +129,10 @@ public class TeachingAssistantManagementSystemController {
 	public void acceptOffer(String courseID, int studentID) throws InvalidInputException{
 		String error = "";
 		if(courseID == null){
-			error = error + "Course ID can not be empty.";
+			error = error + "Course ID can not be empty. ";
 		}
 		if(studentID< 10000000){
-			error = error + "Student ID invalid.";
+			error = error + "Student ID invalid. ";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
@@ -155,10 +155,10 @@ public class TeachingAssistantManagementSystemController {
 	public void declineOffer(String courseID, int studentID) throws InvalidInputException{
 		String error = "";
 		if(courseID == null){
-			error = error + "Course ID can not be empty.";
+			error = error + "Course ID can not be empty. ";
 		}
 		if(studentID< 10000000){
-			error = error + "Student ID invalid.";
+			error = error + "Student ID invalid. ";
 		}
 		if(error.length()>0){
 			throw new InvalidInputException(error);
