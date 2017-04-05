@@ -82,6 +82,7 @@ public class TeachingAssistantManagementSystemController {
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 	public void writeReview(String courseID, String review, int studentID) throws InvalidInputException{
+		boolean isValid = false;
 		String error = "";
 		if (courseID == null){
 			error = error + "Course ID can not be empty. ";			
@@ -100,13 +101,18 @@ public class TeachingAssistantManagementSystemController {
 				for (JobOffer nextOffer : nextCourse.getJob()){
 					if (nextOffer.getAcceptedApplicantId() == studentID){
 						nextOffer.setReview(review);
+						isValid = true;
 					}
 				}
 			}
 		}
+		if(!isValid){
+			throw new InvalidInputException("Job Not Found. ");
+		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 	public void offerJob(String courseID, int studentID) throws InvalidInputException{
+		boolean isValid = false;
 		String error = "";
 		if(courseID == null){
 			error = error + "Course ID can not be empty. ";
@@ -123,14 +129,19 @@ public class TeachingAssistantManagementSystemController {
 					for (Application nextApp : nextOffer.getApplications()){
 						if(nextApp.getApplicant().getMcgillId() == studentID){
 							nextApp.setStatus(Status.Offered);
+							isValid = true;
 						}
 					}
 				}
 			}
 		}
+		if(!isValid){
+			throw new InvalidInputException("Job Not Found. ");
+		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 	public void acceptOffer(String courseID, int studentID) throws InvalidInputException{
+		boolean isValid = false;
 		String error = "";
 		if(courseID == null){
 			error = error + "Course ID can not be empty. ";
@@ -145,19 +156,24 @@ public class TeachingAssistantManagementSystemController {
 			if(nextCourse.getCourseId().equals(courseID)){
 				for (JobOffer nextOffer : nextCourse.getJob()){
 					for (Application nextApp : nextOffer.getApplications()){
-						if (nextApp.getApplicant().getMcgillId() == studentID){
+						if (nextApp.getApplicant().getMcgillId() == studentID && nextApp.getStatus() != Status.UnderReview){
 							nextOffer.setAcceptedApplicantId(studentID);
 							nextApp.setStatus(Status.Accepted);
+							isValid = true;;
 						}
 					}
 				}
 			}
+		}
+		if(!isValid){
+			throw new InvalidInputException("Offer not found. ");
 		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}
 	
 	public void declineOffer(String courseID, int studentID) throws InvalidInputException{
 		String error = "";
+		boolean isValid = false;
 		if(courseID == null){
 			error = error + "Course ID can not be empty. ";
 		}
@@ -171,12 +187,16 @@ public class TeachingAssistantManagementSystemController {
 			if(nextCourse.getCourseId().equals(courseID)){
 				for (JobOffer nextOffer : nextCourse.getJob()){
 					for (Application nextApp : nextOffer.getApplications()){
-						if (nextApp.getApplicant().getMcgillId() == studentID){
+						if (nextApp.getApplicant().getMcgillId() == studentID && nextApp.getStatus() != Status.UnderReview){
 							nextApp.setStatus(Status.Declined);
+							isValid = true;
 						}
 					}
 				}
 			}
+		}
+		if (!isValid){
+			throw new InvalidInputException("Offer not found. ");
 		}
 		PersistenceXStream.saveToXMLwithXStream(dp);
 	}

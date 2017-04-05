@@ -80,6 +80,8 @@ public class ViewCoursePage extends JFrame{
 	private JLabel applicationStatusLabel;
 	private JLabel applicationStatusText;
 	private JButton deleteCourseButton;
+	private JButton refreshButton;
+	
 	public ViewCoursePage(Department dpt)
 	{
 		this.dpt = dpt;
@@ -94,6 +96,7 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    refreshButton = new JButton();
 	    applicationStatusLabel = new JLabel();
 	    applicationStatusText = new JLabel();
 	    mcgillIdLabel = new JLabel();
@@ -153,7 +156,7 @@ public class ViewCoursePage extends JFrame{
 	    
 	    
 	    // default text
-	    deleteCourseButton.setText("Delete Course. ");
+	    deleteCourseButton.setText("Delete Course ");
 	    applicationStatusLabel.setText("Application Status: ");
 	    applicationStatusText.setText("--");
 	    getExperienceLabel.setText("Experience: ");
@@ -180,7 +183,7 @@ public class ViewCoursePage extends JFrame{
 		graderJobLabel.setText("Grader Hours: " );
 		graderJobText.setText("--");
 		getInfoButton.setText("Get Course Info");
-		errorMessage.setText("--");
+		errorMessage.setText("");
 		taHourLabel.setText("TA Work hours:");
 		taHourText.setText("");
 		graderHourLabel.setText("Grader Work Hours:");
@@ -203,6 +206,7 @@ public class ViewCoursePage extends JFrame{
 		mcgillIDLabel.setText("Applicant ID:");
 		mcgillIDText.setText("");
 		createReviewButton.setText("Create Review");
+		refreshButton.setText("Refresh ");
 		
 		//This will cause a bug for now since there are no courses to show
 		
@@ -253,7 +257,7 @@ public class ViewCoursePage extends JFrame{
 		panel.add(budgetText);
 		panel.add(studentsEnrolledLabel);
 		panel.add(studentsEnrolledText);
-	
+		panel.add(refreshButton);
 		panel.add(createCourseButton);
 		panel.add(applyToJobs);
 		panel.add(experienceLabel);
@@ -455,6 +459,10 @@ public class ViewCoursePage extends JFrame{
         hg4.addComponent(declineOfferButton);
         vg11.addComponent(declineOfferButton);
         
+        //Refresh button
+        
+        hg4.addComponent(refreshButton);
+        vg16.addComponent(refreshButton);
         
         GroupLayout.SequentialGroup hseq1 = layout.createSequentialGroup();
         hseq1.addGroup(hg1);
@@ -485,7 +493,7 @@ public class ViewCoursePage extends JFrame{
         
        
         layout.setVerticalGroup(vseq1);
-        courseDropdown.addItem("");
+        courseDropdown.addItem("--");
         for (Course nextCourse: dpt.getTaManager().getCourses()){
 			courseDropdown.addItem(nextCourse.getCourseId());
 		}
@@ -536,7 +544,13 @@ public class ViewCoursePage extends JFrame{
         		getAppInfoActionPerformed();
         	}
 	    });
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		refreshButtonActionPerformed();
+        	}
+	    });
 	}
+	
 	
 	public void refreshdata(){
 		errorMessage.setText(error);
@@ -557,15 +571,69 @@ public class ViewCoursePage extends JFrame{
 			experienceTextField.setText("");
 			reviewText.setText("");
 			reviewStudentIdText.setText("");
+			mcgillIdText.setText("--");
+			jobTypeText.setText("--");
+			getExperienceText.setText("--");
+			applicationStatusText.setText("--");
 		}
 		pack();
 	}
-	
+	public void refreshButtonActionPerformed(){
+		courseDropdown.setSelectedIndex(0);
+		deleteCourseButton.setText("Delete Course ");
+	    applicationStatusLabel.setText("Application Status: ");
+	    applicationStatusText.setText("--");
+	    getExperienceLabel.setText("Experience: ");
+	    getExperienceText.setText("--");
+	    mcgillIdLabel.setText("Mcgill ID: ");
+	    mcgillIdText.setText("--");
+	    jobTypeLabel.setText("Job Type: ");
+	    jobTypeText.setText("--");
+	    getApplicationInfoButton.setText("Get App Info");
+	    acceptApplicationButton.setText("Offer Job");
+	    acceptOfferButton.setText("Accept Offer");
+	    declineOfferButton.setText("Decline Offer");
+	    reviewLabel.setText("Review: ");
+	    reviewText.setText("");
+	    reviewStudentIdLabel.setText("Student ID: ");
+	    reviewStudentIdText.setText("");
+	    dropdownLabel.setText("Course: " );
+	    idLabel.setText("ID: " );
+		idText.setText("--");
+		creditLabel.setText("Credits: " );
+		creditText.setText("--");
+		taJobLabel.setText("TA Hours: " );
+		taJobText.setText("--");
+		graderJobLabel.setText("Grader Hours: " );
+		graderJobText.setText("--");
+		getInfoButton.setText("Get Course Info");
+		errorMessage.setText("");
+		taHourLabel.setText("TA Work hours:");
+		taHourText.setText("");
+		graderHourLabel.setText("Grader Work Hours:");
+		graderHourText.setText("");
+		creditLabel2.setText("Course Credits:");
+		creditText2.setText("");
+		courseIDLabel.setText("Course ID:");
+		courseIDText.setText("");
+		budgetLabel.setText("Course Budget:");
+		budgetText.setText("");
+		studentsEnrolledLabel.setText("Students Enrolled:");
+		studentsEnrolledText.setText("");
+		createCourseButton.setText("Create Course");
+		experienceLabel.setText("Experience:");
+		experienceTextField.setText("");
+		applyToJobs.setText("Apply to job");
+		mcgillIDLabel.setText("Applicant ID:");
+		mcgillIDText.setText("");
+		createReviewButton.setText("Create Review");
+		refreshButton.setText("Refresh ");
+	}
 	public void getAppInfoActionPerformed() {
 		error = null;
 		boolean isValid = false;
 		
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select a course. ";
 			refreshdata();
 			return;
@@ -578,7 +646,8 @@ public class ViewCoursePage extends JFrame{
 				return;
 			}	
 		} catch (NumberFormatException e){
-			error = "Invalid Mcgill ID. ";
+			error = "Invalid McGill ID. ";
+			refreshdata();
 			return;
 		}
 			for (Course nextCourse: dpt.getTaManager().getCourses()){
@@ -595,6 +664,7 @@ public class ViewCoursePage extends JFrame{
 									jobTypeText.setText("Grader");
 								}
 								applicationStatusText.setText(nextApp.getStatusFullName());
+								
 								isValid = true;
 							}
 						}
@@ -603,16 +673,20 @@ public class ViewCoursePage extends JFrame{
 			}
 			if(!isValid){
 				error = "Application not found. ";
-				
+				refreshdata();
 			}
-		
-		refreshdata();
+			else{
+				errorMessage.setText("");
+				reviewStudentIdText.setText("");
+			}
+			
+			
 	}
 	public void acceptOfferActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		if(courseDropdown.getSelectedItem().toString().equals("")){
-			error = "Must select the course the reviewed TA or grader worked on.";
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
+			error = "Must select course. ";
 			refreshdata();
 			return;
 		}
@@ -631,8 +705,8 @@ public class ViewCoursePage extends JFrame{
 	public void declineOfferActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		if(courseDropdown.getSelectedItem().toString().equals("")){
-			error = "Must select the course the reviewed TA or grader worked on.";
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
+			error = "Must select course. ";
 			refreshdata();
 			return;
 		}
@@ -650,7 +724,7 @@ public class ViewCoursePage extends JFrame{
 	public void acceptApplicationActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select the course the reviewed TA or grader worked on.";
 			refreshdata();
 			return;
@@ -669,7 +743,7 @@ public class ViewCoursePage extends JFrame{
 	public void createReviewActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select the course the reviewed TA or grader worked on.";
 			refreshdata();
 			return;
@@ -690,7 +764,7 @@ public class ViewCoursePage extends JFrame{
 	public void applyToJobActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select a course to apply to.";
 			refreshdata();
 			return;
@@ -722,7 +796,7 @@ public class ViewCoursePage extends JFrame{
 	}
 	public void getInfoActionPerformed(){
 		error = null;
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select a course. ";
 			refreshdata();
 			return;
@@ -744,7 +818,7 @@ public class ViewCoursePage extends JFrame{
 	}
 	public void deleteCourseActionPerformed(){
 		error = null;
-		if(courseDropdown.getSelectedItem().toString().equals("")){
+		if(courseDropdown.getSelectedItem().toString().equals("--")){
 			error = "Must select a course. ";
 			refreshdata();
 			return;
