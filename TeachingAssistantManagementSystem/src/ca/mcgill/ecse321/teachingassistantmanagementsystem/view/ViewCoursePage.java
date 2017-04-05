@@ -750,8 +750,8 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-		courseDropdown.removeItemAt(courseDropdown.getSelectedIndex());
 		tac.deleteCourse(courseDropdown.getSelectedIndex()-1);
+		courseDropdown.removeItemAt(courseDropdown.getSelectedIndex());
 		refreshdata();
 	}
 	public void createCourseActionPerformed(){
