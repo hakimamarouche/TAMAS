@@ -57,6 +57,10 @@ public class TeachingAssistantManagementSystemController {
 		PersistenceXStream.saveToXMLwithXStream(dp);
 		return newCourse;
 	}
+	public void deleteCourse(int index){
+		jm.getCourse(index).delete();
+		PersistenceXStream.saveToXMLwithXStream(dp);
+	}
 	public void applyForJob(int mcgillID, String experience, JobOffer job) throws InvalidInputException{
 		String error = "";
 		if(mcgillID<10000000){

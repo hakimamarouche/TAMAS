@@ -70,7 +70,16 @@ public class ViewCoursePage extends JFrame{
 	private JButton acceptApplicationButton;
 	private JButton acceptOfferButton;
 	private JButton declineOfferButton;
-	
+	private JButton getApplicationInfoButton;
+	private JLabel mcgillIdLabel;
+	private JLabel mcgillIdText;
+	private JLabel getExperienceLabel;
+	private JLabel getExperienceText;
+	private JLabel jobTypeLabel;
+	private JLabel jobTypeText;
+	private JLabel applicationStatusLabel;
+	private JLabel applicationStatusText;
+	private JButton deleteCourseButton;
 	public ViewCoursePage(Department dpt)
 	{
 		this.dpt = dpt;
@@ -85,6 +94,15 @@ public class ViewCoursePage extends JFrame{
 	    errorMessage.setForeground(Color.RED);
 	    
 	    // inits
+	    applicationStatusLabel = new JLabel();
+	    applicationStatusText = new JLabel();
+	    mcgillIdLabel = new JLabel();
+	    mcgillIdText = new JLabel();
+	    getExperienceLabel = new JLabel();
+	    getExperienceText = new JLabel();
+	    jobTypeLabel = new JLabel();
+	    jobTypeText = new JLabel();
+	    getApplicationInfoButton = new JButton();
 	    acceptOfferButton = new JButton();
 	    declineOfferButton = new JButton();
 	    acceptApplicationButton = new JButton();
@@ -123,6 +141,7 @@ public class ViewCoursePage extends JFrame{
 		studentsEnrolledLabel = new JLabel();
 		studentsEnrolledText = new JTextField();
 		createCourseButton = new JButton();
+		deleteCourseButton = new JButton();
 		
 		
 		
@@ -134,6 +153,16 @@ public class ViewCoursePage extends JFrame{
 	    
 	    
 	    // default text
+	    deleteCourseButton.setText("Delete Course. ");
+	    applicationStatusLabel.setText("Application Status: ");
+	    applicationStatusText.setText("--");
+	    getExperienceLabel.setText("Experience: ");
+	    getExperienceText.setText("--");
+	    mcgillIdLabel.setText("Mcgill ID: ");
+	    mcgillIdText.setText("--");
+	    jobTypeLabel.setText("Job Type: ");
+	    jobTypeText.setText("--");
+	    getApplicationInfoButton.setText("Get App Info");
 	    acceptApplicationButton.setText("Offer Job");
 	    acceptOfferButton.setText("Accept Offer");
 	    declineOfferButton.setText("Decline Offer");
@@ -150,17 +179,17 @@ public class ViewCoursePage extends JFrame{
 		taJobText.setText("--");
 		graderJobLabel.setText("Grader Hours: " );
 		graderJobText.setText("--");
-		getInfoButton.setText("Get course info");
+		getInfoButton.setText("Get Course Info");
 		errorMessage.setText("--");
 		taHourLabel.setText("TA Work hours:");
 		taHourText.setText("");
-		graderHourLabel.setText("Grader Work hours:");
+		graderHourLabel.setText("Grader Work Hours:");
 		graderHourText.setText("");
-		creditLabel2.setText("Course credits:");
+		creditLabel2.setText("Course Credits:");
 		creditText2.setText("");
 		courseIDLabel.setText("Course ID:");
 		courseIDText.setText("");
-		budgetLabel.setText("Course budget:");
+		budgetLabel.setText("Course Budget:");
 		budgetText.setText("");
 		studentsEnrolledLabel.setText("Students Enrolled:");
 		studentsEnrolledText.setText("");
@@ -180,6 +209,16 @@ public class ViewCoursePage extends JFrame{
 	    // layout		
 		
 		JPanel panel = new JPanel();
+		panel.add(deleteCourseButton);
+		panel.add(applicationStatusLabel);
+		panel.add(applicationStatusText);
+		panel.add(mcgillIdLabel);
+		panel.add(mcgillIdText);
+		panel.add(getExperienceLabel);
+		panel.add(getExperienceText);
+		panel.add(jobTypeLabel);
+		panel.add(jobTypeText);
+		panel.add(getApplicationInfoButton);
 		panel.add(acceptOfferButton);
 		panel.add(declineOfferButton);
 		panel.add(acceptApplicationButton);
@@ -245,6 +284,10 @@ public class ViewCoursePage extends JFrame{
         GroupLayout.Group vg10 = layout.createParallelGroup();
         GroupLayout.Group vg11 = layout.createParallelGroup();
         GroupLayout.Group vg12 = layout.createParallelGroup();
+        GroupLayout.Group vg13 = layout.createParallelGroup();
+        GroupLayout.Group vg14 = layout.createParallelGroup();
+        GroupLayout.Group vg15 = layout.createParallelGroup();
+        GroupLayout.Group vg16 = layout.createParallelGroup();
         
         
         //Error message
@@ -284,10 +327,14 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(graderJobText);
         vg5.addComponent(graderJobText);
         
-        //Apply to job
         
         hg1.addComponent(getInfoButton);
         vg6.addComponent(getInfoButton);
+        
+        hg2.addComponent(deleteCourseButton);
+        vg6.addComponent(deleteCourseButton);
+        
+        //Apply to job
         
         hg1.addComponent(mcgillIDLabel);
         vg7.addComponent(mcgillIDLabel);
@@ -371,6 +418,35 @@ public class ViewCoursePage extends JFrame{
         hg2.addComponent(acceptApplicationButton);
         vg12.addComponent(acceptApplicationButton);
         
+        //Get application info
+        
+        hg1.addComponent(getApplicationInfoButton);
+        vg12.addComponent(getApplicationInfoButton);
+        
+        hg1.addComponent(mcgillIdLabel);
+        vg13.addComponent(mcgillIdLabel);
+        
+        hg2.addComponent(mcgillIdText);
+        vg13.addComponent(mcgillIdText);
+        
+        hg1.addComponent(jobTypeLabel);
+        vg14.addComponent(jobTypeLabel);
+        
+        hg2.addComponent(jobTypeText);
+        vg14.addComponent(jobTypeText);
+        
+        hg1.addComponent(getExperienceLabel);
+        vg15.addComponent(getExperienceLabel);
+        
+        hg2.addComponent(getExperienceText);
+        vg15.addComponent(getExperienceText);
+        
+        hg1.addComponent(applicationStatusLabel);
+        vg16.addComponent(applicationStatusLabel);
+        
+        hg2.addComponent(applicationStatusText);
+        vg16.addComponent(applicationStatusText);
+        
         //Accept and decline offer
         
         hg3.addComponent(acceptOfferButton);
@@ -400,6 +476,10 @@ public class ViewCoursePage extends JFrame{
         vseq1.addGroup(vg10);
         vseq1.addGroup(vg11);
         vseq1.addGroup(vg12);
+        vseq1.addGroup(vg13);
+        vseq1.addGroup(vg14);
+        vseq1.addGroup(vg15);
+        vseq1.addGroup(vg16);
         
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(errorMessage).addGroup(hseq1));
         
@@ -415,6 +495,12 @@ public class ViewCoursePage extends JFrame{
 					getInfoActionPerformed();
         	}
 	    });
+        deleteCourseButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+					deleteCourseActionPerformed();
+        	}
+	    });
+        
         createCourseButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
 					createCourseActionPerformed();
@@ -445,6 +531,11 @@ public class ViewCoursePage extends JFrame{
         		declineOfferActionPerformed();
         	}
 	    });
+        getApplicationInfoButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		getAppInfoActionPerformed();
+        	}
+	    });
 	}
 	
 	public void refreshdata(){
@@ -469,6 +560,54 @@ public class ViewCoursePage extends JFrame{
 		}
 		pack();
 	}
+	
+	public void getAppInfoActionPerformed() {
+		error = null;
+		boolean isValid = false;
+		
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select a course. ";
+			refreshdata();
+			return;
+		}
+		
+		try{
+			if(Integer.parseInt(reviewStudentIdText.getText())<10000000) {
+				error = "Invalid McGill ID. ";
+				refreshdata();
+				return;
+			}	
+		} catch (NumberFormatException e){
+			error = "Invalid Mcgill ID. ";
+			return;
+		}
+			for (Course nextCourse: dpt.getTaManager().getCourses()){
+				if (nextCourse.getCourseId().equals(courseDropdown.getSelectedItem().toString())){
+					for (JobOffer nextJob : nextCourse.getJob()){
+						for (Application nextApp : nextJob.getApplications()){
+							if (nextApp.getApplicant().getMcgillId() == Integer.parseInt(reviewStudentIdText.getText()) ){
+								mcgillIdText.setText("" + nextApp.getApplicant().getMcgillId());
+								getExperienceText.setText(nextApp.getExperience());
+								if(nextCourse.getJob(0) == nextJob){
+									jobTypeText.setText("TA");
+								}
+								if(nextCourse.getJob(1)== nextJob){
+									jobTypeText.setText("Grader");
+								}
+								applicationStatusText.setText(nextApp.getStatusFullName());
+								isValid = true;
+							}
+						}
+					}
+				}
+			}
+			if(!isValid){
+				error = "Application not found. ";
+				
+			}
+		
+		refreshdata();
+	}
 	public void acceptOfferActionPerformed(){
 		error = null;
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
@@ -478,7 +617,11 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		try { 
+			try{
 			tac.acceptOffer(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			} catch (NumberFormatException e){
+				error = "Invalid Mcgill ID. ";
+			}
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}
@@ -494,10 +637,15 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		try{
-			tac.declineOffer(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			try{
+				tac.declineOffer(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			} catch (NumberFormatException e){
+				error = "Invalid McGill ID. ";
+			}
 		}catch(InvalidInputException e){
 			error = e.getMessage();
 		}
+		refreshdata();
 	}
 	public void acceptApplicationActionPerformed(){
 		error = null;
@@ -508,7 +656,11 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		try {
+			try{
 			tac.offerJob(courseDropdown.getSelectedItem().toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			} catch (NumberFormatException e){
+				error = "Invalid Mcgill ID. ";
+			}
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}
@@ -523,7 +675,11 @@ public class ViewCoursePage extends JFrame{
 			return;
 		}
 		try {
+			try{
 			tac.writeReview(courseDropdown.getSelectedItem().toString(),reviewText.toString(), Integer.parseInt(reviewStudentIdText.getText()));
+			} catch (NumberFormatException e){
+				error = "Invalid Mcgill ID";
+			}
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}
@@ -544,25 +700,21 @@ public class ViewCoursePage extends JFrame{
 			refreshdata();
 			return;
 		}
-		try{
-			JobOffer newJob = null;
-			for (Course nextCourse: dpt.getTaManager().getCourses()){
-				if (nextCourse.getCourseId().equals(courseDropdown.getSelectedItem().toString())){
-					if (taGraderDropDown.getSelectedIndex()==1){
-						newJob = new GraderOffer(nextCourse.getGraderWorkHours(),null,0,nextCourse,nextCourse.getBudget()/nextCourse.getGraderWorkHours());
-					}
-					if (taGraderDropDown.getSelectedIndex()==2){
-						newJob = new TaOffer(nextCourse.getTaWorkHours(),null,0, nextCourse, nextCourse.getBudget()/nextCourse.getTaWorkHours());
+		try{						
+			try{
+				for(Course nextCourse: dpt.getTaManager().getCourses()){
+					if(nextCourse.getCourseId().equals(courseDropdown.getSelectedItem().toString())){
+						if (taGraderDropDown.getSelectedIndex()==1){
+							tac.applyForJob(Integer.parseInt(mcgillIDText.getText()), experienceTextField.getText(), nextCourse.getJob(1));
+						}
+						if (taGraderDropDown.getSelectedIndex()==2){
+							tac.applyForJob(Integer.parseInt(mcgillIDText.getText()), experienceTextField.getText(), nextCourse.getJob(0));
+						}
 					}
 				}
-			}
-			if(!(newJob == null)){
-				try{
-					tac.applyForJob(Integer.parseInt(mcgillIDText.getText()), experienceTextField.getText(), newJob);
-				} catch (NumberFormatException e1){
-					error = "Invalid Mcgill ID.";
-				}
-			}
+			} catch (NumberFormatException e1){
+				error = "Invalid Mcgill ID.";
+			}		
 		} catch (InvalidInputException e){
 			error = e.getMessage();
 		}
@@ -570,6 +722,11 @@ public class ViewCoursePage extends JFrame{
 	}
 	public void getInfoActionPerformed(){
 		error = null;
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select a course. ";
+			refreshdata();
+			return;
+		}
 		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
 		try{
 			for (Course nextCourse: tac.ViewCourses()){
@@ -583,6 +740,19 @@ public class ViewCoursePage extends JFrame{
 		} catch (NullPointerException e) {
 			error = e.getMessage();
 		}
+		errorMessage.setText("");
+	}
+	public void deleteCourseActionPerformed(){
+		error = null;
+		if(courseDropdown.getSelectedItem().toString().equals("")){
+			error = "Must select a course. ";
+			refreshdata();
+			return;
+		}
+		TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+		courseDropdown.removeItemAt(courseDropdown.getSelectedIndex());
+		tac.deleteCourse(courseDropdown.getSelectedIndex()-1);
+		refreshdata();
 	}
 	public void createCourseActionPerformed(){
 		error = null;
