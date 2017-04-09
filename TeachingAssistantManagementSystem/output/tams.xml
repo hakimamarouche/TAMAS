@@ -1,0 +1,60 @@
+<department id="1">
+  <taManager id="2">
+    <hourlyRate>4</hourlyRate>
+    <courses id="3">
+      <course id="4">
+        <taWorkHours>120</taWorkHours>
+        <graderWorkHours>80</graderWorkHours>
+        <coursCredit>3</coursCredit>
+        <courseId>ECSE321</courseId>
+        <studentsEnroled>5000</studentsEnroled>
+        <budget>100</budget>
+        <job id="5">
+          <TAOffer id="6">
+            <workHours>120</workHours>
+            <course reference="4"/>
+            <applications id="7"/>
+            <capacity>0</capacity>
+          </TAOffer>
+          <graderoffer id="8">
+            <workHours>80</workHours>
+            <course reference="4"/>
+            <applications id="9"/>
+            <capacity>1</capacity>
+          </graderoffer>
+          <TAOffer id="10">
+            <workHours>120</workHours>
+            <course reference="4"/>
+            <applications id="11"/>
+            <capacity>0</capacity>
+          </TAOffer>
+          <TAOffer id="12">
+            <workHours>120</workHours>
+            <course reference="4"/>
+            <applications id="13">
+              <application id="14">
+                <experience>I&apos;m good at math. Like really really good. Trust me.</experience>
+                <applicant id="15">
+                  <mcgillId>260582911</mcgillId>
+                  <degree>GRADUATE</degree>
+                  <applications id="16">
+                    <application reference="14"/>
+                  </applications>
+                </applicant>
+                <jobs class="TAOffer" reference="12"/>
+              </application>
+            </applications>
+            <capacity>0</capacity>
+          </TAOffer>
+        </job>
+        <jobManager reference="2"/>
+        <instructor id="17">
+          <coursesTaught id="18">
+            <course reference="4"/>
+          </coursesTaught>
+        </instructor>
+      </course>
+    </courses>
+    <department reference="1"/>
+  </taManager>
+</department>
