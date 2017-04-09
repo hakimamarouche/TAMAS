@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,12 +29,13 @@ import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobManager;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobOffer;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
 
+import static ecse321.mcgill.ca.tamas.R.id.viewCoursesSpinner;
+
 public class MainActivity extends AppCompatActivity {
     private Department dp = null;
     private String fileName;
     String error = null;
-    private JobManager jm;
-
+    public JobManager jm;
     private String [] arraySpinner;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -56,9 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fileName = getFilesDir().getAbsolutePath() + "/output.xml";
-        dp = PersistenceXStream.initializeModelManager(fileName);
-        jm = dp.getTaManager();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -71,7 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        Spinner2();
+        fileName = getFilesDir().getAbsolutePath() + "/output.xml";
+        dp = PersistenceXStream.initializeModelManager(fileName);
+        jm = dp.getTaManager();
+        refreshData();
+
     }
 
     public List<Course> ViewCourses(){
@@ -117,21 +119,24 @@ public class MainActivity extends AppCompatActivity {
 
         return newCourse;
     }
-    public void Spinner2() {
-        viewCourse();
-        this.arraySpinner = new String[]{viewCourse().getCourseId()};
 
-        Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        s.setAdapter(adapter);
-    }
     public void refreshData() {
-        EditText id = (EditText) findViewById(R.id.mcgillID);
+        viewCourse();
+        /*EditText id = (EditText) findViewById(R.id.mcgillID);
         id.setText("");
         EditText exp = (EditText) findViewById(R.id.exp);
-        exp.setText("");
+        exp.setText("");*/
+
+        Spinner s = (Spinner) findViewById(viewCoursesSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, R.id.viewCoursesSpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        for (Course c: jm.getCourses()) {
+            adapter.add(c.getCourseId());
+        }
+        s.setAdapter(adapter);
     }
+
 
     //App runs properly when apply button is pressed
 
@@ -161,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         newApplication.setStatus(Application.Status.UnderReview);
         job.addApplication(newApplication);
         PersistenceXStream.saveToXMLwithXStream(dp);
-            refreshData();
+
     }
 
 }
