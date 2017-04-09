@@ -1,6 +1,8 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
+
 <html>
 	<head>
+		<link href="style.css" type='text/css' rel="stylesheet">
 		<meta charset="UTF-8">
 		<title>Teaching Assistant Management System</title>
 		<style>
@@ -24,9 +26,12 @@
 		$pm = new PersistenceTams();
 		$dpt = $pm->loadDataFromStore();
 		$jm = $dpt->getTaManager();
-		
+		$poop = 2;
+// 		echo "$poop";
+// 		echo "$jm->numberOfCourses()";
+				
 		?>
-		
+		<h1>Instructor</h1>
 		<form action="UpdateCourseInfo.php" method="post">
 			<?php 
 			if (isset($_SESSION['errorCourseInfo']) && !empty($_SESSION['errorCourseInfo']))
@@ -36,13 +41,9 @@
 			?>
 			
 			<p>Course? <select name='coursespinner'>
-			<?php 
-// 			foreach ($jm->getCourses() as $course) {
-// 				echo "<option>" . $course->getCourseID() . "</option>";
-// 			} 
-			?>
+
 			</select></p>
-			
+
 			<p>Course ID: 
 			<?php 
 			if (isset($_SESSION['courseID']) && !empty($_SESSION['courseID'])) {
@@ -81,11 +82,7 @@
 		<form action="ApplyForJob.php" method="post">
 		
 			<p>Course? <select name='coursespinner'>
-			<?php 
-// 			foreach ($jm->getCourses() as $course) {
-// 				echo "<option>" . $course->getCourseID() . "</option>";
-// 			} 
-			?>
+
 			</select></p>
 			
 			<p>McGill ID? <input type="text" name="mcgill_id" />
