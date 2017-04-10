@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.InvalidInputException;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.TeachingAssistantManagementSystemController;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.persistence.PersistenceXStream;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Applicant;
 import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Application;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Department dp = null;
     private String fileName;
     String error = null;
+
     public JobManager jm;
     private String [] arraySpinner;
     /**
@@ -71,15 +73,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
         fileName = getFilesDir().getAbsolutePath() + "/output.xml";
         dp = PersistenceXStream.initializeModelManager(fileName);
-        jm = dp.getTaManager();
-        refreshData();
+        this.jm = dp.getTaManager();
+        addTestJobPosting();
 
     }
-
-    public List<Course> ViewCourses(){
-        return jm.getCourses();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,26 +99,37 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public List<Course> ViewCourses(){
+        return jm.getCourses();
+    }
 
-
-    public Course viewCourse() {
-
+    public void addTestJobPosting() {
         Instructor prof = new Instructor();
-        Course newCourse = new Course(20, 20, 3, "ECSE321", 200, 200, jm, prof);
-        TaOffer newTaJob = new TaOffer(20, null, 0, newCourse, newCourse.getBudget() / 20);
-        GraderOffer newGraderJob = new GraderOffer(20, null, 0, newCourse, newCourse.getBudget() / 20);
-        newTaJob.setCapacity(((200 / 2) / jm.getHourlyRate()) / 20);
-        newGraderJob.setCapacity(((200 / 2) / jm.getHourlyRate()) / 20);
-        newCourse.addJob(newTaJob);
-        newCourse.addJob(newGraderJob);
-        jm.addCourse(newCourse);
-        PersistenceXStream.saveToXMLwithXStream(dp);
-
-        return newCourse;
+        TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dp);
+        try {
+            Course course1 = tac.createJobPosting(20,20, 3,"ECSE321", 200, 300, prof);
+            TaOffer newTaJob = new TaOffer(20 ,null,0, course1, course1.getBudget()/20);
+            GraderOffer newGraderJob = new GraderOffer(20,null,0, course1, course1.getBudget()/20);
+            newTaJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
+            newGraderJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
+            course1.addJob(newTaJob);
+            course1.addJob(newGraderJob);
+            jm.addCourse(course1);
+            PersistenceXStream.saveToXMLwithXStream(dp);
+            Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            for(Course c: tac.ViewCourses()) {
+                adapter.add(c.getCourseId());
+            }
+            s.setAdapter(adapter);
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refreshData() {
-        viewCourse();
+
         /*EditText id = (EditText) findViewById(R.id.mcgillID);
         id.setText("");
         EditText exp = (EditText) findViewById(R.id.exp);
@@ -141,11 +149,14 @@ public class MainActivity extends AppCompatActivity {
     //App runs properly when apply button is pressed
 
     public void applyForJob(View view) throws InvalidInputException {
+        Spinner coursesSpinner = (Spinner) findViewById(R.id.viewCoursesSpinner);
+        int cPosition = coursesSpinner.getSelectedItemPosition();
         TextView mcgillID = (TextView) findViewById(R.id.mcgillID);
         TextView exp = (TextView) findViewById(R.id.exp);
         TextView errorBox = (TextView) findViewById(R.id.errorBox);
         String error = "";
         int id = 0;
+        TeachingAssistantManagementSystemController tac  = new TeachingAssistantManagementSystemController(dp);
         if (mcgillID.getText().toString().length() == 0 && exp.getText().toString().length() < 30) {
             errorBox.setText("Please enter a valid McGill ID and experience must be atleast 30 characters long");
         }
@@ -159,13 +170,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else { //The user is applying to the job that is selected in the from the drop down list (spinner)
-
-        Applicant newApplicant = new Applicant(Integer.parseInt(mcgillID.toString()));
-        JobOffer job  = new JobOffer(2,"hello", 260625272, (Course) ViewCourses());
-        Application newApplication = new Application(exp.toString(), newApplicant, job );
-        newApplication.setStatus(Application.Status.UnderReview);
-        job.addApplication(newApplication);
-        PersistenceXStream.saveToXMLwithXStream(dp);
+            for(Course nextCourse: dp.getTaManager().getCourses()) {
+                tac.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), nextCourse.getJob(cPosition));
+            }
+            Applicant newApplicant = new Applicant(Integer.parseInt(mcgillID.toString()));
+            JobOffer job  = new JobOffer(2,"hello", 260625272, (Course) ViewCourses());
+            Application newApplication = new Application(exp.toString(), newApplicant, job );
+            newApplication.setStatus(Application.Status.UnderReview);
+            job.addApplication(newApplication);
+            PersistenceXStream.saveToXMLwithXStream(dp);
 
     }
 
