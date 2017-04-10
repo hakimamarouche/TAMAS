@@ -13,7 +13,7 @@ class Course
   private $taWorkHours;
   private $graderWorkHours;
   private $coursCredit;
-  private $courseId;
+  public $courseId;
   private $studentsEnroled;
   private $budget;
 

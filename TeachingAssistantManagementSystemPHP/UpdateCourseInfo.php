@@ -1,5 +1,7 @@
 <?php
+
 require_once 'controller/Controller.php';
+
 session_start();
 
 $_SESSION["errorApply"] = "";
@@ -14,7 +16,7 @@ if (isset($_POST['coursespinner'])) {
 }
 if ($course = NULL);	
 {
-	$_SESSION["errorCourseInfo"] = $e->getMessage();
+	$_SESSION["errorCourseInfo"] = "No course selected!";
 }
 ?>
 
