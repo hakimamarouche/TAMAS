@@ -25,7 +25,7 @@ class Controller
 	
 	public function viewCourses()
 	{
-		
+		return $this->$jm;
 	}
 	
 	public function applyForJob($mcgillID, $experience, $job)

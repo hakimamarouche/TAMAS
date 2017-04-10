@@ -36,12 +36,13 @@ class PersistenceTest extends PHPUnit_Framework_TestCase
 		// 3. Clear the data from memory
 		$dpt->delete();
 
-		//$this->assertEquals(0, $dpt->getTaManager()->numberOfCourses() );
+		$this->assertNull($dpt->getTaManager());
 
 		// 4. Load it back in
 		$dpt = $this->pm->loadDataFromStore();
 
 		// 5. Check that we got it back
+		$this->assertNotNull($dpt->getTaManager());
 		$this->assertEquals(1, $dpt->getTaManager()->numberOfCourses() );
 
 	}

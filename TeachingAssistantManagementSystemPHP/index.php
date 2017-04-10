@@ -21,28 +21,43 @@
 		require_once __DIR__.'\model\Application.php';
 		
 		session_start();
-	
-		//Retrieve the data from the model
+
 		$pm = new PersistenceTams();
-		$dpt = $pm->loadDataFromStore();
-		$jm = $dpt->getTaManager();
-		$poop = 2;
-// 		echo "$poop";
-// 		echo "$jm->numberOfCourses()";
-				
+		$dptClass = new Department();
+		$dpt = $dptClass->newInstance(4);
+		$jobManager = $dpt->getTaManager();
+		$instructor = new Instructor();
+		$course = new Course(120, 80, 3, "ECSE321", 100, 5000, $jobManager, $instructor);
+		$dpt->getTaManager()->addCourse($course);
+	
+		$pm->writeDataToStore($dpt);
+		
+		$jobManager = $dpt->getTaManager();
+		
+// 		foreach($jobManager->getCourses() as $key) {
+// 			echo "$key->courseId";
+// 		}
+		
 		?>
 		<h1>Instructor</h1>
 		<form action="UpdateCourseInfo.php" method="post">
+		
+			<h3>View Courses</h3>
 			<?php 
 			if (isset($_SESSION['errorCourseInfo']) && !empty($_SESSION['errorCourseInfo']))
 			{
 				echo " * " . $_SESSION["errorCourseInfo"];
 			}
 			?>
-			
-			<p>Course? <select name='coursespinner'>
 
-			</select></p>
+
+			<?php 
+			echo "<p>Course? <select name='coursespinner'>";
+			foreach ($jobManager->getCourses() as $key) {
+				echo "<option>" . $key->courseId . "</option>";
+			}
+			echo "</select>";
+			?>
 
 			<p>Course ID: 
 			<?php 
@@ -79,28 +94,57 @@
 			<p><input type="submit" value="Get Course Info"/></p>
 		</form>
 		
-		<form action="ApplyForJob.php" method="post">
-		
-			<p>Course? <select name='coursespinner'>
+		<form action="PublishPosting.php" method="post">
+			
+			<h3>Publish Job Postings</h3>
+			<?php 
+			echo "<p>Course <select name='coursespinner'>";
+			foreach ($jobManager->getCourses() as $key) {
+				echo "<option>" . $key->courseId . "</option>";
+			}
+			echo "</select>";
+			?>
 
 			</select></p>
-			
-			<p>McGill ID? <input type="text" name="mcgill_id" />
-			<p>Experience? <input type="text" name="experience" />
+
+			<p>Required Experience <input type="text" name="experience" />
 			<span class="error">
 			<?php 
-			if (isset($_SESSION['errorApply']) && !empty($_SESSION['errorApply'])) {
-				echo " * " . $_SESSION['errorApply'];
+			if (isset($_SESSION['errorExperience']) && !empty($_SESSION['errorExperience'])) {
+				echo " * " . $_SESSION['errorExperience'];
 			}
 			?>
 
 			</span> </p>
-			<p><input type="submit" value="Apply For Job"/></p>
+			<p><input type="submit" value="Publish Job"/></p>
+		
 		</form>
 		
-<!-- 		<form action="test.php" method="post"> -->
-<!-- 			<p><input type="submit" value="Deliverable 2 Add Course Debug"/></p> -->
-<!-- 		</form> -->
+		<form action="Evaluate TA.php" method="post">
+			
+			<h3>Evaluate TAs</h3>
+			<?php 
+			echo "<p>TA <select name='coursespinner'>";
+			foreach ($jobManager->getCourses() as $key) {
+				echo "<option>" . $key->courseId . "</option>";
+			}
+			echo "</select>";
+			?>
+
+			</select></p>
+
+			<p>Feedback <input type="text" name="feedback" />
+			<span class="error">
+			<?php 
+			if (isset($_SESSION['errorFeedback']) && !empty($_SESSION['errorFeedback'])) {
+				echo " * " . $_SESSION['errorFeedback'];
+			}
+			?>
+
+			</span> </p>
+			<p><input type="submit" value="Submit Evaluation"/></p>
+		
+		</form>
 		
 		
 	</body>
