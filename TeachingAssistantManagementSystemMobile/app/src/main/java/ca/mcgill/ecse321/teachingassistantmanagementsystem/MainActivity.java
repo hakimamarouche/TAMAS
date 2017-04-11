@@ -25,18 +25,32 @@ import static ca.mcgill.ecse321.teachingassistantmanagementsystem.R.string.exper
 
 public class MainActivity extends AppCompatActivity {
     private String [] arraySpinner;
+    private String fileName;
     public JobManager jm = null;
     public Course c;
-    private String fileName;
     String error = null;
-    private Department dp;
+    private Department dpt = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize file name and XStream
+        fileName = getFilesDir().getAbsolutePath() + "/tams.xml";
+        dpt = PersistenceXStream.initializeModelManager(fileName);
+
+        try {
+            createJobPosting();
+        } catch (InvalidInputException e) {
+            error = e.getMessage();
+        }
+        refreshCoursesData();
+        /* Commented this out because trying to implement (making tests)
+        refreshData();
         viewCoursesSpinner();
+        */
 
     }
     //setting up a temp spinner to test
@@ -44,10 +58,16 @@ public class MainActivity extends AppCompatActivity {
        this.arraySpinner = new String [] {"ECSE321"};
         //added this comment to see if commit is working
         Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         s.setAdapter(adapter);
 
+    }
+
+    private void createJobPosting() throws InvalidInputException {
+        TeachingAssistantManagementSystemController crp = new TeachingAssistantManagementSystemController(dpt);
+        crp.createJobPosting(1, 2, 2, "COMP 202", 23, 32, new Instructor());
+        crp.createJobPosting(1, 2, 2, "ECSE 321", 23, 32, new Instructor());
+        crp.createJobPosting(1, 2, 2, "MATH 264", 23, 32, new Instructor());
     }
 
     //App crashes if I use this method. Still need to work on it.
@@ -71,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
         id.setText("");
         EditText exp = (EditText) findViewById(R.id.exp);
         exp.setText("");
+    }
+
+    private void refreshCoursesData() {
+        /* ccomment this because it was from the event registration but might be useful
+        TextView tv = (TextView) findViewById(R.id.event_name);
+        tv.setText("");
+        */
+
+
+
+        // Initialize the data in the course spinner
+        Spinner spinner = (Spinner) findViewById(R.id.viewCoursesSpinner);
+        ArrayAdapter<CharSequence> courseAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        for (Course c: dpt.getTaManager().getCourses()) {
+            courseAdapter.add(c.getCourseId());
+        }
+        spinner.setAdapter(courseAdapter);
     }
 
     //App runs properly when apply button is pressed
@@ -101,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             int pPosition = course.getSelectedItemPosition();
             Course c = jm.getCourse(pPosition);
             JobOffer j = new JobOffer(1, c);
-            TeachingAssistantManagementSystemController aj = new TeachingAssistantManagementSystemController(dp);
+            TeachingAssistantManagementSystemController aj = new TeachingAssistantManagementSystemController(dpt);
 
             aj.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), j);
             refreshData();
