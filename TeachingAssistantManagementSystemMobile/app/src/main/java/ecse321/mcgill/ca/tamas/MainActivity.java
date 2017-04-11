@@ -8,9 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.InvalidInputException;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.TeachingAssistantManagementSystemController;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Course;
+import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Department dpt;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -122,43 +130,39 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
 
-
     //App runs properly when apply button is pressed
 
-   /* public void applyForJob(View view) throws InvalidInputException {
-        Spinner coursesSpinner = (Spinner) findViewById(R.id.viewCoursesSpinner);
-        int cPosition = coursesSpinner.getSelectedItemPosition();
+    public void applyForJob(View view) throws InvalidInputException {
+        Spinner spinner2 = (Spinner) findViewById(R.id.viewCoursesSpinner);
         TextView mcgillID = (TextView) findViewById(R.id.mcgillID);
         TextView exp = (TextView) findViewById(R.id.exp);
         TextView errorBox = (TextView) findViewById(R.id.errorBox);
         String error = "";
         int id = 0;
-        TeachingAssistantManagementSystemController tac  = new TeachingAssistantManagementSystemController(dpt);
+        Spinner s = (Spinner) findViewById(R.id.taGraderSpinner);
+        TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
         if (mcgillID.getText().toString().length() == 0 && exp.getText().toString().length() < 30) {
             errorBox.setText("Please enter a valid McGill ID and experience must be atleast 30 characters long");
-        }
-
-        else if (mcgillID.getText().toString().length() != 0 && exp.getText().toString().length() < 30) {
+        } else if (mcgillID.getText().toString().length() != 0 && exp.getText().toString().length() < 30) {
             id = Integer.parseInt(mcgillID.getText().toString());
             errorBox.setText("Experience must be atleast 30 characters long");
             if (id < 10000000) {
                 errorBox.setText(error + "Invalid McGill ID");
             }
-        }
+        } else { //The user is applying to the job that is selected in the from the drop down list (spinner)
+            for (Course nextCourse : dpt.getTaManager().getCourses()) {
+                if (nextCourse.getCourseId().equals(spinner2.getSelectedItem().toString())) {
+                    if (s.getSelectedItemPosition() == 1) {
+                        tac.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), nextCourse.getJob(1));
+                    }
+                    if (s.getSelectedItemPosition() == 2) {
+                        tac.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), nextCourse.getJob(0));
+                    }
 
-        else { //The user is applying to the job that is selected in the from the drop down list (spinner)
-            for(Course nextCourse: dpt.getTaManager().getCourses()) {
-                tac.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), nextCourse.getJob(cPosition));
+                }
             }
-            Applicant newApplicant = new Applicant(Integer.parseInt(mcgillID.toString()));
-            JobOffer job  = new JobOffer(2,"hello", 260625272, (Course) ViewCourses());
-            Application newApplication = new Application(exp.toString(), newApplicant, job );
-            newApplication.setStatus(Application.Status.UnderReview);
-            job.addApplication(newApplication);
-            PersistenceXStream.saveToXMLwithXStream(dpt);
-
-    }*/
-
+        }
+    }
 }
 
 
