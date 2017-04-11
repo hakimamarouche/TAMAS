@@ -2,43 +2,16 @@ package ecse321.mcgill.ca.tamas;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import java.util.List;
-
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.InvalidInputException;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.controller.TeachingAssistantManagementSystemController;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.persistence.PersistenceXStream;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Applicant;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Application;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Course;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Department;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.GraderOffer;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.Instructor;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobManager;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.JobOffer;
-import ca.mcgill.ecse321.teachingassistantmanagementsystem.ump.TaOffer;
-
-import static ecse321.mcgill.ca.tamas.R.id.viewCoursesSpinner;
 
 public class MainActivity extends AppCompatActivity {
-    private Department dp = null;
-    private String fileName;
-    String error = null;
 
-    public JobManager jm;
-    private String [] arraySpinner;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -58,24 +31,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        fileName = getFilesDir().getAbsolutePath() + "/output.xml";
-        dp = PersistenceXStream.initializeModelManager(fileName);
-        this.jm = dp.getTaManager();
-        addTestJobPosting();
 
+
+        /*try {
+            addTestJobPosting();
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
+        refreshData();
+        */
     }
 
     @Override
@@ -99,56 +73,59 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public List<Course> ViewCourses(){
-        return jm.getCourses();
-    }
 
-    public void addTestJobPosting() {
+
+    /*public void addTestJobPosting() throws InvalidInputException {
+        TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
+        tac.createJobPosting(1, 2, 2, "ECSE 321", 23, 32, new Instructor());
+
+        /*TextView a = (TextView) findViewById(R.id.errorBox);
         Instructor prof = new Instructor();
         TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dp);
-        try {
-            Course course1 = tac.createJobPosting(20,20, 3,"ECSE321", 200, 300, prof);
-            TaOffer newTaJob = new TaOffer(20 ,null,0, course1, course1.getBudget()/20);
-            GraderOffer newGraderJob = new GraderOffer(20,null,0, course1, course1.getBudget()/20);
-            newTaJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
-            newGraderJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
-            course1.addJob(newTaJob);
-            course1.addJob(newGraderJob);
-            jm.addCourse(course1);
-            PersistenceXStream.saveToXMLwithXStream(dp);
-            Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
-            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            for(Course c: tac.ViewCourses()) {
-                adapter.add(c.getCourseId());
-            }
-            s.setAdapter(adapter);
-        } catch (InvalidInputException e) {
-            e.printStackTrace();
-        }
-    }
+        Course course1 = new Course(20,20, 3,"ECSE321", 200, 300, jm, prof);
+        //Course course1 = tac.createJobPosting(20,20, 3,"ECSE321", 200, 300, prof);
+        TaOffer newTaJob = new TaOffer(20 ,null,0, course1, course1.getBudget()/2);
+        GraderOffer newGraderJob = new GraderOffer(20,null,0, course1, course1.getBudget()/2);
+        newTaJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
+        newGraderJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
+        course1.addJob(newTaJob);
+        course1.addJob(newGraderJob);
+        jm.addCourse(course1);
+        PersistenceXStream.saveToXMLwithXStream(dp);
+        Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-    public void refreshData() {
+        s.setAdapter(adapter);
+        for(Course c: jm.getCourses()) {
+            adapter.add(c.getCourseId());
+        }
+       // s.setAdapter(adapter);
+    } */
+
+
+    /*public void refreshData() {
 
         /*EditText id = (EditText) findViewById(R.id.mcgillID);
         id.setText("");
         EditText exp = (EditText) findViewById(R.id.exp);
-        exp.setText("");*/
+        exp.setText("");
 
-        Spinner s = (Spinner) findViewById(viewCoursesSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, R.id.viewCoursesSpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner = (Spinner) findViewById(R.id.viewCoursesSpinner);
+        ArrayAdapter<CharSequence> courseAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        for (Course c: jm.getCourses()) {
-            adapter.add(c.getCourseId());
+        for (Course c: dpt.getTaManager().getCourses()) {
+            courseAdapter.add(c.getCourseId());
         }
-        s.setAdapter(adapter);
-    }
+        spinner.setAdapter(courseAdapter);
+    }*/
+
 
 
     //App runs properly when apply button is pressed
 
-    public void applyForJob(View view) throws InvalidInputException {
+   /* public void applyForJob(View view) throws InvalidInputException {
         Spinner coursesSpinner = (Spinner) findViewById(R.id.viewCoursesSpinner);
         int cPosition = coursesSpinner.getSelectedItemPosition();
         TextView mcgillID = (TextView) findViewById(R.id.mcgillID);
@@ -156,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         TextView errorBox = (TextView) findViewById(R.id.errorBox);
         String error = "";
         int id = 0;
-        TeachingAssistantManagementSystemController tac  = new TeachingAssistantManagementSystemController(dp);
+        TeachingAssistantManagementSystemController tac  = new TeachingAssistantManagementSystemController(dpt);
         if (mcgillID.getText().toString().length() == 0 && exp.getText().toString().length() < 30) {
             errorBox.setText("Please enter a valid McGill ID and experience must be atleast 30 characters long");
         }
@@ -170,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else { //The user is applying to the job that is selected in the from the drop down list (spinner)
-            for(Course nextCourse: dp.getTaManager().getCourses()) {
+            for(Course nextCourse: dpt.getTaManager().getCourses()) {
                 tac.applyForJob(Integer.parseInt(mcgillID.getText().toString()), exp.getText().toString(), nextCourse.getJob(cPosition));
             }
             Applicant newApplicant = new Applicant(Integer.parseInt(mcgillID.toString()));
@@ -178,54 +155,11 @@ public class MainActivity extends AppCompatActivity {
             Application newApplication = new Application(exp.toString(), newApplicant, job );
             newApplication.setStatus(Application.Status.UnderReview);
             job.addApplication(newApplication);
-            PersistenceXStream.saveToXMLwithXStream(dp);
+            PersistenceXStream.saveToXMLwithXStream(dpt);
 
-    }
+    }*/
 
 }
 
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    Tab1ViewCourses tab1 = new Tab1ViewCourses();
-                    return tab1;
-                case 1:
-                   Tab2AcceptJob tab2 = new Tab2AcceptJob();
-                    return tab2;
-                default:
-                    return null;
-
-            }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "VIEW COURSES";
-                case 1:
-                    return "OFFERS";
-
-            }
-            return null;
-        }
-    }
-}
