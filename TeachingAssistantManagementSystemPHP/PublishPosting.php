@@ -3,19 +3,15 @@ require_once 'controller/Controller.php';
 
 session_start();
 
-$_SESSION["errorApply"] = "";
+$_SESSION["errorJobPosting"] = "";
 $c = new Controller();
 
 try {
-	$course = NULL;
-	if (isset($_POST['coursespinner'])){
-		$course = $_POST['coursespinner'];
-		$job = $course->getJob();
-	}
-	$c->applyForJob($_POST['mcgill_ID'], $_POST['mcgill_ID'], $job);
-	
+	//Didn't have time to finish all of this, but the function here would send the correct course object + text from the experience box 
+	//to the controller class, which would then generate the ta and grader job offers
+	$c->makeJobOffers();
 } catch (Exception $e) {
-	$_SESSION["errorApply"] = $e->getMessage();
+	$_SESSION["errorJobPosting"] = $e->getMessage();
 }
 ?>
 

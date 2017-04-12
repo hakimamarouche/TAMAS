@@ -33,10 +33,7 @@
 		$pm->writeDataToStore($dpt);
 		
 		$jobManager = $dpt->getTaManager();
-		
-// 		foreach($jobManager->getCourses() as $key) {
-// 			echo "$key->courseId";
-// 		}
+
 		
 		?>
 		<h1>Instructor</h1>
@@ -95,6 +92,12 @@
 		</form>
 		
 		<form action="PublishPosting.php" method="post">
+			<?php 
+			if (isset($_SESSION['errorJobPosting']) && !empty($_SESSION['errorJobPosting']))
+			{
+				echo " * " . $_SESSION["errorJobPosting"];
+			}
+			?>
 			
 			<h3>Publish Job Postings</h3>
 			<?php 
@@ -120,13 +123,25 @@
 		
 		</form>
 		
-		<form action="Evaluate TA.php" method="post">
+		<form action="EvaluateTA.php" method="post">
+			<?php 
+			if (isset($_SESSION['errorEvaluation']) && !empty($_SESSION['errorEvaluation']))
+			{
+				echo " * " . $_SESSION["errorEvaluation"];
+			}
+			?>
 			
 			<h3>Evaluate TAs</h3>
 			<?php 
-			echo "<p>TA <select name='coursespinner'>";
-			foreach ($jobManager->getCourses() as $key) {
-				echo "<option>" . $key->courseId . "</option>";
+			
+			$hardcoded = array(
+					"Andrew Tran",
+					"Antoine Khouri"
+			);
+			
+			echo "<p>TA <select name='taspinner'>";
+			foreach ($hardcoded as $key) {
+				echo "<option>" . $key . "</option>";
 			}
 			echo "</select>";
 			?>

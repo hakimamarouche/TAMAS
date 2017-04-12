@@ -4,17 +4,18 @@ require_once 'controller/Controller.php';
 
 session_start();
 
-$_SESSION["errorApply"] = "";
+$_SESSION["errorCourseInfo"] = "";
 $c = new Controller();
 $course = NULL;
 if (isset($_POST['coursespinner'])) {
+	//Temp code -> need to get course object from controller
 	$course = $_POST['coursespinner'];
-	$_SESSION["courseID"] = $course->getCourseId();
-	$_SESSION["courseCredits"] = $course->getCoursCredit();
-	$_SESSION["courseTAHours"] = $course->getTaWorkHours();
-	$_SESSION["courseGraderHours"] = $course->getGraderWorkHours();
+	$_SESSION["courseID"] = "ECSE321";
+	$_SESSION["courseCredits"] = "3";
+	$_SESSION["courseTAHours"] = "120";
+	$_SESSION["courseGraderHours"] = "80";
 }
-if ($course = NULL);	
+else	
 {
 	$_SESSION["errorCourseInfo"] = "No course selected!";
 }

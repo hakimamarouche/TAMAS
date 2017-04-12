@@ -3,19 +3,15 @@ require_once 'controller/Controller.php';
 
 session_start();
 
-$_SESSION["errorApply"] = "";
+$_SESSION["errorEvaluation"] = "";
 $c = new Controller();
 
 try {
-	$course = NULL;
-	if (isset($_POST['coursespinner'])){
-		$course = $_POST['coursespinner'];
-		$job = $course->getJob();
-	}
-	$c->applyForJob($_POST['mcgill_ID'], $_POST['mcgill_ID'], $job);
-	
+	//Did not have time to implement the controller method for this, but it would send the correct
+	//TA/Grader object and the evaluation, and then store it.
+	$c->evaluateTA();
 } catch (Exception $e) {
-	$_SESSION["errorApply"] = $e->getMessage();
+	$_SESSION["errorEvaluation"] = $e->getMessage();
 }
 ?>
 

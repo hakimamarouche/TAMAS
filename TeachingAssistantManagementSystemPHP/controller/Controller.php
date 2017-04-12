@@ -55,9 +55,16 @@ class Controller
 		$job->addApplication($application);
 	}
 	
-// 	public function testMakeCourse()
-// 	{
-// 		$instructor = new Instructor();
-// 		$jm->addCourseVia(120, 180, 3, ECSE321, 100, 5000, $instructor);
-// 	}
+	public function makeJobOffers()
+	{
+		//The code here would take in a course and job description, find the course in the persistence department,
+		//And then generate TaOffers and GraderOffer objects based on information on the course.
+	}
+	
+	public function evaluateTA()
+	{
+		//The code here would take in the TA/Grader and evaluation string as arguments, and then access the
+		//Persistence department, find the correct ta/grader and update the evaluation on that object.
+	}
+
 }
