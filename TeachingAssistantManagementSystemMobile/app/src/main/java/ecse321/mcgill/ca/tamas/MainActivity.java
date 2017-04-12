@@ -50,14 +50,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-        /*try {
-            addTestJobPosting();
-        } catch (InvalidInputException e) {
-            e.printStackTrace();
-        }
-        refreshData();
-        */
     }
 
     @Override
@@ -83,34 +75,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*public void addTestJobPosting() throws InvalidInputException {
-        TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dpt);
-        tac.createJobPosting(1, 2, 2, "ECSE 321", 23, 32, new Instructor());
-
-        /*TextView a = (TextView) findViewById(R.id.errorBox);
-        Instructor prof = new Instructor();
-        TeachingAssistantManagementSystemController tac = new TeachingAssistantManagementSystemController(dp);
-        Course course1 = new Course(20,20, 3,"ECSE321", 200, 300, jm, prof);
-        //Course course1 = tac.createJobPosting(20,20, 3,"ECSE321", 200, 300, prof);
-        TaOffer newTaJob = new TaOffer(20 ,null,0, course1, course1.getBudget()/2);
-        GraderOffer newGraderJob = new GraderOffer(20,null,0, course1, course1.getBudget()/2);
-        newTaJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
-        newGraderJob.setCapacity(((200/2)/jm.getHourlyRate())/20);
-        course1.addJob(newTaJob);
-        course1.addJob(newGraderJob);
-        jm.addCourse(course1);
-        PersistenceXStream.saveToXMLwithXStream(dp);
-        Spinner s = (Spinner) findViewById(R.id.viewCoursesSpinner);
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        s.setAdapter(adapter);
-        for(Course c: jm.getCourses()) {
-            adapter.add(c.getCourseId());
-        }
-       // s.setAdapter(adapter);
-    } */
-
 
     /*public void refreshData() {
 
@@ -128,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
         }
         spinner.setAdapter(courseAdapter);
     }*/
-
-
-    //App runs properly when apply button is pressed
 
     public void applyForJob(View view) throws InvalidInputException {
         Spinner spinner2 = (Spinner) findViewById(R.id.viewCoursesSpinner);

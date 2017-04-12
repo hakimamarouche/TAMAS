@@ -65,15 +65,3 @@ public class Tab1ViewCourses extends Fragment {
         return rootView;
     }
 }
-               /* creditText.setText(String.valueOf(nextCourse.getCoursCredit()));
-                taJobText.setText(String.valueOf(nextCourse.getTaWorkHours())+ " hours");
-                graderJobText.setText(String.valueOf(nextCourse.getGraderWorkHours())+" hours");
-
-        }
-
-
-
-
-
-    }
-}*/
